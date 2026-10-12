@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>İletişim — Nöbetçi</title>
+  <meta name="description" content="Nöbetçi hakkında bilgi almak, görüş ya da öneri iletmek için bize yazın.">
+  <meta name="theme-color" content="#05070c">
+  <meta name="color-scheme" content="dark">
+  <meta property="og:title" content="İletişim — Nöbetçi">
+  <meta property="og:description" content="Nöbetçi hakkında bilgi almak, görüş ya da öneri iletmek için bize yazın.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/paylasim.png">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/yazitipleri/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/yazitipleri/manrope-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/site.css">
+  <script src="icerik.js" defer></script>
+  <script src="assets/ekranlar/konumlar.js" defer></script>
+  <script src="js/tur.js" defer></script>
+  <script src="js/sayfalar.js" defer></script>
+  <script src="js/site.js" defer></script>
+</head>
+<body data-sayfa="iletisim">
+  <a class="atla" href="#ana">İçeriğe geç</a>
+
+  <!-- Kalkan logosu (tekrar kullanılır) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="kalkan-g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#7dd3fc"/><stop offset=".55" stop-color="#38bdf8"/><stop offset="1" stop-color="#2563eb"/>
+      </linearGradient>
+      <symbol id="kalkan" viewBox="0 0 48 56">
+        <path d="M24 2.5 44 10v16.5c0 13.2-8.4 22.6-20 27-11.6-4.4-20-13.8-20-27V10L24 2.5Z" fill="rgba(56,189,248,.08)" stroke="url(#kalkan-g)" stroke-width="2.6" stroke-linejoin="round"/>
+        <path d="M15.5 28.5 21.5 34.5 33 22" fill="none" stroke="url(#kalkan-g)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="imlec" viewBox="0 0 24 24"><path d="M5 3l13.5 9.2-6.1 1.2 3.6 6.9-2.6 1.3-3.6-6.9L5 19z" fill="#fff" stroke="#0b1220" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    </defs>
+  </svg>
+
+  <header class="ust" id="ust"></header>
+
+  <main id="ana">
+    <section class="sayfa-bas sayfa-bas-kisa" aria-labelledby="sayfa-baslik">
+      <div class="izgara-zemin" aria-hidden="true"></div>
+      <div class="imlec-isigi" aria-hidden="true"></div>
+      <div class="sayfa-bas-ic">
+        <span class="ust-etiket" data-metin="iletisimSayfa.ust"></span>
+        <h1 id="sayfa-baslik" class="sayfa-baslik" data-metin="iletisimSayfa.baslik"></h1>
+        <p class="sayfa-alt" data-metin="iletisimSayfa.alt"></p>
+      </div>
+    </section>
+    <section class="bolum iletisim" aria-label="İletişim formu">
+      <div class="iletisim-kap" id="iletisim-kap"></div>
+    </section>
+  </main>
+
+  <footer class="alt" id="alt"></footer>
+  <noscript><p class="noscript">İletişim formu için JavaScript gerekir.</p></noscript>
+</body>
+</html>

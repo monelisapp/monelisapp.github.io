@@ -22,6 +22,7 @@ window.ICERIK = {
     { ad: 'Özellikler', adres: 'ozellikler.html', sayfa: 'ozellikler' },
     { ad: 'Güvenlik', adres: 'guvenlik.html', sayfa: 'guvenlik' },
     { ad: 'Yenilikler', adres: 'yenilikler.html', sayfa: 'yenilikler' },
+    { ad: 'İletişim', adres: 'iletisim.html', sayfa: 'iletisim' },
     { ad: 'İndir', adres: 'indir.html', sayfa: 'indir' }
   ],
 
@@ -375,6 +376,28 @@ window.ICERIK = {
       { id: 'ekip', baslik: 'Ekip ve roller.', satir: 'Kimin açabileceğini siz seçersiniz; liste de kasada şifreli.',
         kisiler: [['Deniz', 'Admin'], ['Ece', 'Kullanıcı'], ['Mert', 'Kullanıcı']] }
     ]
+  },
+
+  // ------------------------------------------------------------------ İletişim sayfası
+  // Form Web3Forms ile e-posta olarak iletilir (sitede e-posta adresi yoktur; yalnız herkese açık erişim anahtarı).
+  // anahtar boşsa form gösterilir ama gönderilemez ("yakında" notu).
+  iletisimSayfa: {
+    ust: 'İletişim',
+    baslik: 'Bize yazın.',
+    alt: 'Bilgi almak, görüş ya da öneri: mesajınızı bırakın, size dönelim.',
+    anahtar: '2c2d6bfd-35a5-4e33-a9f4-7d4db46b7feb',
+    servis: 'https://api.web3forms.com/submit',
+    konular: ['Ürün hakkında bilgi', 'Görüş', 'Öneri', 'Diğer'],
+    etiketler: { ad: 'Ad soyad', eposta: 'E-posta', telefon: 'Telefon', konu: 'Konu', mesaj: 'Mesajınız' },
+    ipuclari: { telefon: 'İsteğe bağlı', mesaj: 'Ne hakkında yazıyorsunuz?' },
+    onay: 'Bilgilerimin yalnızca bu mesaja dönüş için kullanılmasını kabul ediyorum.',
+    gonder: 'Gönder',
+    gonderiliyor: 'Gönderiliyor…',
+    basari: 'Teşekkürler, mesajınız ulaştı. En kısa sürede dönüş yapacağız.',
+    hata: 'Mesaj gönderilemedi. Biraz sonra yeniden deneyin.',
+    eksik: 'Lütfen işaretli alanları doldurun.',
+    yakinda: 'İletişim formu çok yakında açılacak.',
+    gizlilik: 'Mesajınız e-posta olarak iletilir; site çerez ya da takip kullanmaz.'
   },
 
   yenilikSayfa: { ust: 'Sürüm notları', baslik: 'Yenilikler', alt: 'Her sürümde neler değişti.', yeni: 'yeni' },

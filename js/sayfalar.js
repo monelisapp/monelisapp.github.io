@@ -474,6 +474,84 @@
     });
   }
 
+  // ------------------------------------------------------------------ İletişim
+  // Form, Web3Forms'a JSON olarak gönderilir; servis mesajı e-posta olarak iletir. Robot tuzağı: görünmez "botcheck" alanı.
+  function iletisimSayfasi(o) {
+    const { ICERIK, el, $ } = o;
+    const s = ICERIK.iletisimSayfa || {};
+    const e = s.etiketler || {}; const ip = s.ipuclari || {};
+    const kap = $('#iletisim-kap');
+    const form = el('form', 'iletisim-form kart gorun');
+    form.noValidate = true;
+    let n = 0;
+    const alan = (ad, etiket, tur, { zorunlu = false, ipucu = '', otomatik = '' } = {}) => {
+      const id = `iletisim-${ad}`;
+      const d = el('div', `i-alan i-${ad}`);
+      const l = el('label', '', etiket); l.htmlFor = id;
+      if (!zorunlu && ipucu) l.append(el('span', 'i-istege', ` · ${ipucu}`));
+      let g;
+      if (tur === 'textarea') { g = el('textarea'); g.rows = 6; g.placeholder = ipucu; }
+      else if (tur === 'select') { g = el('select'); for (const k of s.konular || []) { const op = el('option', '', k); op.value = k; g.append(op); } }
+      else { g = el('input'); g.type = tur; }
+      g.id = id; g.name = ad; g.required = zorunlu; if (otomatik) g.autocomplete = otomatik;
+      if (tur === 'tel') g.inputMode = 'tel';
+      g.addEventListener('input', () => d.classList.remove('hatali'));
+      d.append(l, g);
+      n++;
+      return { d, g };
+    };
+    const ad = alan('ad', e.ad, 'text', { zorunlu: true, otomatik: 'name' });
+    const eposta = alan('eposta', e.eposta, 'email', { zorunlu: true, otomatik: 'email' });
+    const telefon = alan('telefon', e.telefon, 'tel', { ipucu: ip.telefon, otomatik: 'tel' });
+    const konu = alan('konu', e.konu, 'select');
+    const mesaj = alan('mesaj', e.mesaj, 'textarea', { zorunlu: true, ipucu: ip.mesaj });
+    const tuzak = el('input'); tuzak.type = 'checkbox'; tuzak.name = 'botcheck'; tuzak.tabIndex = -1; tuzak.className = 'i-tuzak'; tuzak.setAttribute('aria-hidden', 'true');
+    const onayK = el('label', 'i-onay'); const onay = el('input'); onay.type = 'checkbox'; onay.required = true;
+    onayK.append(onay, el('span', '', s.onay || ''));
+    onay.addEventListener('change', () => onayK.classList.remove('hatali'));
+    const gonder = el('button', 'dugme dugme-ana i-gonder'); gonder.type = 'submit';
+    const gonderYazi = el('span', '', s.gonder || 'Gönder'); gonder.append(gonderYazi);
+    const durum = el('p', 'i-durum'); durum.setAttribute('role', 'status'); durum.setAttribute('aria-live', 'polite');
+    const izgara = el('div', 'i-izgara');
+    izgara.append(ad.d, eposta.d, telefon.d, konu.d, mesaj.d);
+    const alt = el('div', 'i-alt'); alt.append(onayK, gonder);
+    form.append(izgara, tuzak, alt, durum, el('p', 'i-gizlilik', s.gizlilik || ''));
+    kap.append(form);
+    if (!s.anahtar) { durum.textContent = s.yakinda || ''; durum.className = 'i-durum bilgi'; }
+    const epostaGecerli = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      if (tuzak.checked) return;
+      const eksikler = [];
+      if (!ad.g.value.trim()) eksikler.push(ad);
+      if (!epostaGecerli(eposta.g.value.trim())) eksikler.push(eposta);
+      if (!mesaj.g.value.trim()) eksikler.push(mesaj);
+      eksikler.forEach((x) => x.d.classList.add('hatali'));
+      if (!onay.checked) onayK.classList.add('hatali');
+      if (eksikler.length || !onay.checked) { durum.textContent = s.eksik || ''; durum.className = 'i-durum hata'; (eksikler[0]?.g || onay).focus(); return; }
+      if (!s.anahtar) { durum.textContent = s.yakinda || ''; durum.className = 'i-durum bilgi'; return; }
+      gonder.disabled = true; gonderYazi.textContent = s.gonderiliyor || '…'; durum.textContent = ''; durum.className = 'i-durum';
+      try {
+        const y = await fetch(s.servis, {
+          method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, credentials: 'omit', referrerPolicy: 'no-referrer',
+          body: JSON.stringify({
+            access_key: s.anahtar, subject: `Nöbetçi sitesi · ${konu.g.value}`, from_name: 'Nöbetçi sitesi',
+            name: ad.g.value.trim(), email: eposta.g.value.trim(), telefon: telefon.g.value.trim(), konu: konu.g.value, message: mesaj.g.value.trim(), botcheck: false
+          })
+        });
+        const j = await y.json().catch(() => ({}));
+        if (!y.ok || j.success === false) throw new Error(j.message || String(y.status));
+        form.classList.add('gonderildi');
+        durum.textContent = s.basari || ''; durum.className = 'i-durum basari';
+        form.reset();
+      } catch {
+        durum.textContent = s.hata || ''; durum.className = 'i-durum hata';
+      } finally {
+        gonder.disabled = false; gonderYazi.textContent = s.gonder || 'Gönder';
+      }
+    });
+  }
+
   window.NobetciSayfa = function (o) {
     const sayfa = document.body.dataset.sayfa;
     if (sayfa === 'nasil') nasilSayfasi(o);
@@ -481,5 +559,6 @@
     else if (sayfa === 'guvenlik') guvenlikSayfasi(o);
     else if (sayfa === 'yenilikler') yenilikSayfasi(o);
     else if (sayfa === 'indir') indirSayfasi(o);
+    else if (sayfa === 'iletisim') iletisimSayfasi(o);
   };
 })();
