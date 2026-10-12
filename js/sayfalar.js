@@ -75,7 +75,7 @@
       }
       const s = 1 + (S - 1) * z;
       const tx = kisit(W * 0.5 - W * cx * S, W - W * S, 0) * z;
-      const ty = kisit(H * (dar ? 0.5 : 0.46) - Hg * cy * S, H - Hg * S, 0) * z;
+      const ty = kisit(H * (dar || secenek.ortala ? 0.5 : 0.46) - Hg * cy * S, H - Hg * S, 0) * z;
       ic.style.transform = `translate(${tx}px, ${ty}px) scale(${s})`;
       Object.assign(isik.style, {
         left: `${(r[0] - 0.008) * 100}%`, top: `${(r[1] - 0.012) * 100}%`, width: `${(r[2] + 0.016) * 100}%`, height: `${(r[3] + 0.024) * 100}%`,
@@ -85,31 +85,13 @@
     };
   }
 
-  /** Kaydırmaya bağlı yapışkan bölümler: her öğe için f(p). Azaltılmış harekette hepsi son hâlinde. */
-  function kaydirmaBagla(o, ogeler, her) {
-    if (o.AZ_HAREKET) { ogeler.forEach((x) => x.f(1)); return; }
-    let istek = 0;
-    const guncelle = () => {
-      istek = 0;
-      const y = innerHeight;
-      ogeler.forEach((x, i) => {
-        const r = x.kok.getBoundingClientRect();
-        if (r.bottom < -y || r.top > y * 2) return;
-        const p = o.kisit(-r.top / Math.max(1, r.height - y));
-        if (Math.abs(p - x.son) > 0.0005) { x.son = p; x.f(p); }
-        x.kok.style.setProperty('--giris', String(o.kisit((y - r.top) / (y * 0.6))));
-        if (her) her(i, r, y);
-      });
-    };
-    const iste = () => { if (!istek) istek = requestAnimationFrame(guncelle); };
-    addEventListener('scroll', iste, { passive: true });
-    // Boyut değişince (ör. telefon döndürülünce) ilerleme aynı kalsa da kamera yeniden kurulur.
-    addEventListener('resize', () => { ogeler.forEach((x) => { x.son = -1; }); iste(); });
-    guncelle();
-  }
-
-  /** Görünür olunca .canli sınıfı (döngüler yalnız görünürken çalışır). */
+  /** Döngüler kaydırmayla değil, üzerine gelince çalışır (ayrılınca durur); dokunmatikte görünürken çalışır. */
   function gorununce(kok, ac, kapat) {
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      kok.addEventListener('pointerenter', () => { kok.classList.add('oynuyor'); ac?.(); });
+      kok.addEventListener('pointerleave', () => { kok.classList.remove('oynuyor'); kapat?.(); });
+      return;
+    }
     new IntersectionObserver(([g]) => { kok.classList.toggle('oynuyor', g.isIntersecting); if (g.isIntersecting) ac?.(); else kapat?.(); }, { threshold: 0.25 }).observe(kok);
   }
 
@@ -167,16 +149,29 @@
       yap.append(metin, gorsel);
       bolum.append(yap);
       kap.append(bolum);
-      ogeler.push({ kok: bolum, f, son: -1 });
+      ogeler.push({ kok: bolum, gorsel, f, sure: a.telefon ? 7000 : Math.max(1, (a.kareler || []).length) * 2800 });
     });
     const ciplerA = [...cipler.querySelectorAll('a')];
     const ilerleme = $('#ilerleme');
-    kaydirmaBagla(o, ogeler, (i, r, y) => {
-      const etkin = r.top <= y * 0.5 && r.bottom > y * 0.5;
-      if (etkin) ciplerA.forEach((c, j) => { if (j === i) c.setAttribute('aria-current', 'step'); else c.removeAttribute('aria-current'); });
+    // Görseller üzerine gelince oynar (dokunmatikte görününce); kaydırma yalnız ilerleme çubuğunu ve etkin adımı günceller.
+    ogeler.forEach((x) => {
+      const oyn = o.oynatici(x.f, x.sure);
+      o.uzerindeOynat(x.gorsel, oyn, { ilk: 0 });
+      new ResizeObserver(() => { if (!oyn.oynuyor) oyn.dur(0); }).observe(x.gorsel);
+    });
+    let istek = 0;
+    const guncelle = () => {
+      istek = 0;
+      const y = innerHeight;
+      ogeler.forEach((x, i) => {
+        const r = x.kok.getBoundingClientRect();
+        if (r.top <= y * 0.5 && r.bottom > y * 0.5) ciplerA.forEach((c, j) => { if (j === i) c.setAttribute('aria-current', 'step'); else c.removeAttribute('aria-current'); });
+      });
       const k = kap.getBoundingClientRect();
       ilerleme.style.transform = `scaleX(${o.kisit(-k.top / Math.max(1, k.height - y))})`;
-    });
+    };
+    addEventListener('scroll', () => { if (!istek) istek = requestAnimationFrame(guncelle); }, { passive: true });
+    guncelle();
   }
 
   // ------------------------------------------------------------------ küçük döngüler (Özellikler / Güvenlik)
@@ -266,7 +261,7 @@
         const sag = el('div', 'detay-medya');
         sag.setAttribute('aria-hidden', 'true');
         if (k.medya?.mikro && MIKRO[k.medya.mikro]) { medya = MIKRO[k.medya.mikro](o, k); sag.append(medya); }
-        else if (k.medya?.ekran) { const g = kesitKur(o, sag, [k.medya], { sabit: true, isiksiz: true, oran: 1, enCok: 1.9 }); requestAnimationFrame(() => g(1)); new ResizeObserver(() => g(1)).observe(sag); }
+        else if (k.medya?.ekran) { const g = kesitKur(o, sag, [k.medya], { sabit: true, ortala: true, oran: 0.94, enCok: 1.9 }); requestAnimationFrame(() => g(1)); new ResizeObserver(() => g(1)).observe(sag); }
         detay.append(sol, sag);
       };
       return { kart, dugme, detay, kur, medyaAc: () => medya?._ac?.(), medyaKapat: () => medya?._kapat?.() };

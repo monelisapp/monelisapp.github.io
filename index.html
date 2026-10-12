@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Nöbetçi — Siz uyurken, testleriniz nöbette</title>
+  <title>Nöbetçi — Testlerin Nöbetçisi</title>
   <meta name="description" content="Nöbetçi: kod yazmadan web ekranı, SOAP/REST servis ve SQL testleri. Ekran değişikliklerini fark eder, gece koşar, sonucu telefonunuza gönderir. Kendi bilgisayarınızda, şifreli ve bulutsuz.">
   <meta name="theme-color" content="#05070c">
   <meta name="color-scheme" content="dark">
-  <meta property="og:title" content="Nöbetçi — Siz uyurken, testleriniz nöbette">
+  <meta property="og:title" content="Nöbetçi — Testlerin Nöbetçisi">
   <meta property="og:description" content="Kod yazmadan test otomasyonu. Kendi bilgisayarınızda, şifreli, bulutsuz.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="assets/paylasim.png">
@@ -44,54 +44,159 @@
     <section class="kahraman" id="kahraman" aria-labelledby="kahraman-baslik">
       <div class="izgara-zemin" aria-hidden="true"></div>
       <div class="imlec-isigi" aria-hidden="true"></div>
-      <div class="kahraman-ic">
-        <div class="kahraman-metin">
-          <div class="kalkan-kap" aria-hidden="true">
-            <svg class="kalkan-buyuk"><use href="#kalkan"/></svg>
-          </div>
-          <h1 id="kahraman-baslik" class="kahraman-baslik" data-metin="kahraman.baslik">Siz uyurken, testleriniz nöbette.</h1>
-          <p class="kahraman-alt" data-metin="kahraman.alt"></p>
-          <div class="kahraman-eylem">
-            <button class="dugme dugme-ana izle-ac" type="button" data-manyetik>
-              <span data-metin="kahraman.dugme">İzle</span>
-              <span class="oynat-daire" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span>
-            </button>
-            <span class="eylem-notu" data-metin="kahraman.dugmeNotu"></span>
-          </div>
+      <h1 id="kahraman-baslik" class="kahraman-baslik" data-metin="kahraman.baslik">Testlerin Nöbetçisi</h1>
+      <div class="kahraman-eylem">
+        <button class="izle-hap izle-ac" type="button" data-manyetik>
+          <span class="izle-hap-ikon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span>
+          <span data-metin="kahraman.dugme">İzle</span>
+        </button>
+      </div>
+      <!-- Nöbet sahnesi: kalkan, tarama halkaları, çevresinde ekranlar; tarama ışını sırayla uğrar, hata yakalanır ve düzelir. -->
+      <div class="nobet" id="nobet" aria-hidden="true">
+        <div class="nobet-derinlik" id="nobet-derinlik">
+          <svg class="nobet-isinlar" id="nobet-isinlar" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+          <span class="nobet-halka" style="--h:1"></span><span class="nobet-halka" style="--h:2"></span><span class="nobet-halka" style="--h:3"></span>
+          <span class="nobet-tarama"></span>
+          <span class="nobet-dalga" id="nobet-dalga"></span>
+          <div class="nobet-merkez"><svg class="nobet-kalkan"><use href="#kalkan"/></svg></div>
+          <div class="nobet-ekranlar" id="nobet-ekranlar"></div>
         </div>
+      </div>
+      <a class="asagi" href="#vitrin" aria-label="Aşağı kaydır"><span></span></a>
+    </section>
 
-        <!-- Canlı mini arayüz (dekoratif döngü) -->
-        <div class="canli" aria-hidden="true">
-          <div class="pencere canli-pencere egik" data-egik>
-            <div class="pencere-ust"><i></i><i></i><i></i><span class="pencere-adi">Nöbetçi</span><span class="canli-rozet"><b></b>canlı</span></div>
-            <div class="kosu-kart">
-              <div class="kosu-ust">
-                <span class="donen"></span>
-                <strong id="canli-kosu-adi"></strong>
-                <span class="kosu-yuzde" id="canli-yuzde">%0</span>
+    <!-- ================= NELER YAPAR (üzerine gelince oynayan vitrin) ================= -->
+    <section class="bolum vitrin" id="vitrin" aria-labelledby="vitrin-baslik">
+      <div class="bolum-bas gorun" data-devami="ozellikler.html"><span class="ust-etiket" data-metin="vitrin.ust"></span><h2 id="vitrin-baslik" data-metin="vitrin.baslik"></h2></div>
+      <div class="vitrin-kap gorun">
+        <ol class="vitrin-liste" id="vitrin-liste" role="tablist" aria-label="Özellikler"></ol>
+        <p class="vitrin-not" id="vitrin-not" aria-live="polite"></p>
+        <div class="vitrin-sahne" id="vitrin-sahne">
+          <div class="vitrin-panel" data-sahne="tarama" id="vitrin-tarama" role="tabpanel">
+            <div class="sahne-gorsel tarama-gorsel" aria-hidden="true">
+              <div class="pencere form-pencere">
+                <div class="pencere-ust"><i></i><i></i><i></i><span class="pencere-adi">demo-portal / müşteri / yeni</span></div>
+                <div class="form-govde">
+                  <div class="form-baslik">Müşteri kaydı</div>
+                  <div class="alan"><label>Ad soyad</label><div class="girdi">Deniz Yılmaz</div></div>
+                  <div class="alan alan-etiket"><label><span class="eski">E-posta</span><span class="yeni">E-posta adresi</span></label><div class="girdi">deniz@ornek.test</div><span class="rozet rozet-sari">Etiket değişti</span></div>
+                  <div class="alan alan-yeni"><div class="alan-ic"><label>Telefon</label><div class="girdi bos">5__ ___ __ __</div></div><span class="rozet rozet-mavi" data-metin="vitrin.liste.0.rozet">Yeni alan</span></div>
+                  <div class="alan"><label>Şehir</label><div class="girdi secim">Ankara</div></div>
+                  <div class="form-dugme">Kaydet</div>
+                  <div class="tarama-isini"></div>
+                </div>
               </div>
-              <div class="cubuk"><span id="canli-cubuk"></span></div>
-              <ol class="adim-listesi" id="canli-adimlar"></ol>
+              <div class="fark-ozeti">
+                <span class="nokta"></span><b>Değişiklikler</b>
+                <span class="fark-cip" data-i="1">+1 yeni alan</span><span class="fark-cip" data-i="2">1 etiket</span>
+              </div>
             </div>
           </div>
-          <div class="telefon canli-telefon">
-            <div class="telefon-cerceve">
-              <div class="telefon-ust"><span class="saat">03:12</span><span class="centik"></span><span class="pil"></span></div>
-              <div class="kilit-ekrani">
-                <div class="kilit-saat">03:12</div>
-                <div class="kilit-not" data-metin="kahraman.kilitNotu"></div>
-                <div class="bildirim" id="canli-bildirim">
-                  <div class="bildirim-ust"><svg aria-hidden="true"><use href="#kalkan"/></svg><b>Nöbetçi</b><span>şimdi</span></div>
-                  <div class="bildirim-metin" id="canli-bildirim-metin"></div>
-                  <div class="bildirim-ayrinti" id="canli-bildirim-ayrinti"></div>
-                  <button class="bildirim-dugme" id="canli-tekrar" tabindex="-1" type="button"></button>
+          <div class="vitrin-panel" data-sahne="oneri" id="vitrin-oneri" role="tabpanel">
+            <div class="sahne-gorsel oneri-gorsel" aria-hidden="true">
+
+            </div>
+          </div>
+          <div class="vitrin-panel" data-sahne="kodsuz" id="vitrin-kodsuz" role="tabpanel">
+            <div class="sahne-gorsel kodsuz-gorsel" aria-hidden="true">
+              <div class="pencere giris-pencere">
+                <div class="pencere-ust"><i></i><i></i><i></i><span class="pencere-adi">demo-portal / giriş</span></div>
+                <div class="giris-govde">
+                  <svg class="giris-logo"><use href="#kalkan"/></svg>
+                  <div class="alan"><label>Kullanıcı adı</label><div class="girdi" id="k-kullanici"><span class="yazi"></span><span class="imlec-cizgi"></span></div></div>
+                  <div class="alan"><label>Parola</label><div class="girdi" id="k-parola"><span class="yazi"></span></div></div>
+                  <div class="form-dugme giris-dugme">Giriş yap<span class="dalga"></span></div>
+                </div>
+                <svg class="sanal-imlec" id="k-imlec"><use href="#imlec"/></svg>
+              </div>
+              <div class="tarif-kart">
+                <div class="tarif-baslik"><span class="kayit-nokta"></span>Giriş tarifi · TEST</div>
+                <ol>
+                  <li><b>1</b>Adres<code>/giris</code></li>
+                  <li><b>2</b>Kullanıcı adı<code>#kullanici</code></li>
+                  <li><b>3</b>Parola<code>#parola</code><em>kasada</em></li>
+                  <li><b>4</b>Giriş düğmesi<code>button</code></li>
+                  <li class="tamam"><b>✓</b>Başarı: “Oturumu kapat”</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="vitrin-panel" data-sahne="akis" id="vitrin-akis" role="tabpanel">
+            <div class="sahne-gorsel akis-gorsel" aria-hidden="true">
+
+            </div>
+          </div>
+          <div class="vitrin-panel" data-sahne="pano" id="vitrin-pano" role="tabpanel">
+            <div class="sahne-gorsel pano-gorsel" aria-hidden="true">
+
+            </div>
+          </div>
+          <div class="vitrin-panel" data-sahne="ekip" id="vitrin-ekip" role="tabpanel">
+            <div class="sahne-gorsel ekip-gorsel" aria-hidden="true">
+
+            </div>
+          </div>
+          <div class="vitrin-panel" data-sahne="gece" id="vitrin-gece" role="tabpanel">
+            <div class="sahne-gorsel gece-gorsel" aria-hidden="true">
+              <div class="saat-kart">
+                <div class="kadran">
+                  <i class="akrep"></i><i class="yelkovan"></i><i class="merkez"></i>
+                  <span class="ce c12"></span><span class="ce c3"></span><span class="ce c6"></span><span class="ce c9"></span>
+                </div>
+                <div class="dijital" id="g-saat">23:00</div>
+                <ul class="plan-listesi">
+                  <li data-i="0"><span class="durum"></span>Ekranlar<small>11 senaryo</small></li>
+                  <li data-i="1"><span class="durum"></span>Servisler<small>SiparisServisi · Stok API</small></li>
+                  <li data-i="2"><span class="durum"></span>SQL kontrolleri<small>3 sorgu</small></li>
+                </ul>
+              </div>
+              <div class="pano-kart">
+                <div class="pano-ust"><span>Koşu trendi</span><small>son 14 gece</small></div>
+                <div class="cubuklar" id="g-cubuklar"></div>
+              </div>
+              <div class="sabah-kart">
+                <span class="gunes"></span>
+                <div><b data-metin="vitrin.liste.6.sabah.baslik"></b><span data-metin="vitrin.liste.6.sabah.satir"></span><small data-metin="vitrin.liste.6.sabah.dikkat"></small></div>
+              </div>
+            </div>
+          </div>
+          <div class="vitrin-panel" data-sahne="kasa" id="vitrin-kasa" role="tabpanel">
+            <div class="sahne-gorsel kasa-gorsel" aria-hidden="true">
+              <div class="kasa-sahne">
+                <svg class="baglanti" viewBox="0 0 300 200" preserveAspectRatio="none"><path d="M4 196 C 90 180, 200 110, 296 6" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6 8" vector-effect="non-scaling-stroke"/></svg>
+                <span class="kesik" aria-hidden="true">✕</span>
+                <div class="bulut">
+                  <svg viewBox="0 0 120 80"><path d="M32 68h58a20 20 0 0 0 2-39.9A28 28 0 0 0 38.5 22 23 23 0 0 0 32 68Z" fill="rgba(148,163,184,.06)" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg>
+                  <span class="parca" style="--x:-40px;--y:-30px"></span><span class="parca" style="--x:30px;--y:-46px"></span><span class="parca" style="--x:52px;--y:10px"></span>
+                  <span class="parca" style="--x:-56px;--y:16px"></span><span class="parca" style="--x:6px;--y:-60px"></span><span class="parca" style="--x:-14px;--y:40px"></span>
+                </div>
+                <div class="bilgisayar">
+                  <div class="ekran-cerceve">
+                    <div class="kasa">
+                      <svg viewBox="0 0 120 140">
+                        <path class="kilit-kol" d="M34 64V44a26 26 0 0 1 52 0v20" fill="none" stroke="url(#kalkan-g)" stroke-width="9" stroke-linecap="round"/>
+                        <rect x="16" y="62" width="88" height="70" rx="16" fill="rgba(56,189,248,.1)" stroke="url(#kalkan-g)" stroke-width="3"/>
+                        <circle cx="60" cy="92" r="8" fill="#38bdf8"/><path d="M60 98v14" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
+                      </svg>
+                      <span class="kasa-halka"></span>
+                    </div>
+                    <span class="kasa-etiket">AES-256</span>
+                  </div>
+                  <div class="taban"></div>
+                  <small>Sizin bilgisayarınız</small>
                 </div>
               </div>
             </div>
           </div>
+          <span class="vitrin-ipucu" id="vitrin-ipucu" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg><span></span></span>
         </div>
       </div>
-      <a class="asagi" href="#tanitim" aria-label="Aşağı kaydır"><span></span></a>
+    </section>
+
+    <!-- ================= NEDEN NÖBETÇİ ================= -->
+    <section class="bolum faydalar" id="faydalar" aria-labelledby="faydalar-baslik">
+      <div class="bolum-bas gorun"><h2 id="faydalar-baslik" data-metin="faydalar.baslik"></h2></div>
+      <div class="fayda-izgara" id="fayda-izgara"></div>
     </section>
 
     <!-- ================= KISA TANITIM (otomatik döngü) ================= -->
@@ -107,158 +212,9 @@
       </button>
     </section>
 
-    <!-- ================= KAYDIRMALI HİKÂYE ================= -->
-    <div class="hikaye" id="hikaye">
-      <nav class="hikaye-ray" id="hikaye-ray" aria-label="Hikâye bölümleri"></nav>
-
-      <!-- 1) Ekran taraması -->
-      <section class="sahne" data-sahne="tarama" aria-labelledby="s-tarama">
-        <div class="sahne-yapiskan">
-          <div class="sahne-metin"><span class="ust-etiket" data-metin="sahneler.0.ust"></span><h2 id="s-tarama" data-metin="sahneler.0.baslik"></h2><p data-metin="sahneler.0.satir"></p></div>
-          <div class="sahne-gorsel" aria-hidden="true">
-            <div class="pencere form-pencere">
-              <div class="pencere-ust"><i></i><i></i><i></i><span class="pencere-adi">demo-portal / müşteri / yeni</span></div>
-              <div class="form-govde">
-                <div class="form-baslik">Müşteri kaydı</div>
-                <div class="alan"><label>Ad</label><div class="girdi">Deniz</div></div>
-                <div class="alan"><label>Soyad</label><div class="girdi">Yılmaz</div></div>
-                <div class="alan alan-etiket"><label><span class="eski">E-posta</span><span class="yeni">E-posta adresi</span></label><div class="girdi">deniz@ornek.test</div><span class="rozet rozet-sari">Etiket değişti</span></div>
-                <div class="alan alan-yeni"><div class="alan-ic"><label>Telefon</label><div class="girdi bos">5__ ___ __ __</div></div><span class="rozet rozet-mavi" data-metin="sahneler.0.rozet">Yeni alan</span></div>
-                <div class="alan"><label>Şehir</label><div class="girdi secim">Ankara</div></div>
-                <div class="form-dugme">Kaydet</div>
-                <div class="tarama-isini"></div>
-              </div>
-            </div>
-            <div class="fark-ozeti">
-              <span class="nokta"></span><b>Değişiklikler</b>
-              <span class="fark-cip" data-i="1">+1 yeni alan</span><span class="fark-cip" data-i="2">1 etiket</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 2) Kod yazmadan -->
-      <section class="sahne" data-sahne="kodsuz" aria-labelledby="s-kodsuz">
-        <div class="sahne-yapiskan">
-          <div class="sahne-metin"><span class="ust-etiket" data-metin="sahneler.1.ust"></span><h2 id="s-kodsuz" data-metin="sahneler.1.baslik"></h2><p data-metin="sahneler.1.satir"></p></div>
-          <div class="sahne-gorsel kodsuz-gorsel" aria-hidden="true">
-            <div class="pencere giris-pencere">
-              <div class="pencere-ust"><i></i><i></i><i></i><span class="pencere-adi">demo-portal / giriş</span></div>
-              <div class="giris-govde">
-                <svg class="giris-logo"><use href="#kalkan"/></svg>
-                <div class="alan"><label>Kullanıcı adı</label><div class="girdi" id="k-kullanici"><span class="yazi"></span><span class="imlec-cizgi"></span></div></div>
-                <div class="alan"><label>Parola</label><div class="girdi" id="k-parola"><span class="yazi"></span></div></div>
-                <div class="form-dugme giris-dugme">Giriş yap<span class="dalga"></span></div>
-              </div>
-              <svg class="sanal-imlec" id="k-imlec"><use href="#imlec"/></svg>
-            </div>
-            <div class="tarif-kart">
-              <div class="tarif-baslik"><span class="kayit-nokta"></span>Giriş tarifi · TEST</div>
-              <ol>
-                <li><b>1</b>Adres<code>/giris</code></li>
-                <li><b>2</b>Kullanıcı adı<code>#kullanici</code></li>
-                <li><b>3</b>Parola<code>#parola</code><em>kasada</em></li>
-                <li><b>4</b>Giriş düğmesi<code>button</code></li>
-                <li class="tamam"><b>✓</b>Başarı: “Oturumu kapat”</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 3) Gece 03:00 -->
-      <section class="sahne" data-sahne="gece" aria-labelledby="s-gece">
-        <div class="sahne-yapiskan">
-          <div class="sahne-metin"><span class="ust-etiket" data-metin="sahneler.2.ust"></span><h2 id="s-gece" data-metin="sahneler.2.baslik"></h2><p data-metin="sahneler.2.satir"></p></div>
-          <div class="sahne-gorsel gece-gorsel" aria-hidden="true">
-            <div class="saat-kart">
-              <div class="kadran">
-                <i class="akrep"></i><i class="yelkovan"></i><i class="merkez"></i>
-                <span class="ce c12"></span><span class="ce c3"></span><span class="ce c6"></span><span class="ce c9"></span>
-              </div>
-              <div class="dijital" id="g-saat">23:00</div>
-              <ul class="plan-listesi">
-                <li data-i="0"><span class="durum"></span>Ekranlar<small>11 senaryo</small></li>
-                <li data-i="1"><span class="durum"></span>Servisler<small>SiparisServisi · Stok API</small></li>
-                <li data-i="2"><span class="durum"></span>SQL kontrolleri<small>3 sorgu</small></li>
-              </ul>
-            </div>
-            <div class="pano-kart">
-              <div class="pano-ust"><span>Koşu trendi</span><small>son 14 gece</small></div>
-              <div class="cubuklar" id="g-cubuklar"></div>
-            </div>
-            <div class="sabah-kart">
-              <span class="gunes"></span>
-              <div><b data-metin="sahneler.2.sabah.baslik"></b><span data-metin="sahneler.2.sabah.satir"></span><small data-metin="sahneler.2.sabah.dikkat"></small></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 4) Cebinizde -->
-      <section class="sahne" data-sahne="cep" aria-labelledby="s-cep">
-        <div class="sahne-yapiskan">
-          <div class="sahne-metin"><span class="ust-etiket" data-metin="sahneler.3.ust"></span><h2 id="s-cep" data-metin="sahneler.3.baslik"></h2><p data-metin="sahneler.3.satir"></p></div>
-          <div class="sahne-gorsel cep-gorsel" aria-hidden="true">
-            <div class="telefon sohbet-telefon" id="cep-telefon"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 5) Verileriniz sizde -->
-      <section class="sahne" data-sahne="kasa" aria-labelledby="s-kasa">
-        <div class="sahne-yapiskan">
-          <div class="sahne-metin"><span class="ust-etiket" data-metin="sahneler.4.ust"></span><h2 id="s-kasa" data-metin="sahneler.4.baslik"></h2><p data-metin="sahneler.4.satir"></p><ul class="kasa-maddeler" id="kasa-maddeler"></ul></div>
-          <div class="sahne-gorsel kasa-gorsel" aria-hidden="true">
-            <div class="kasa-sahne">
-              <svg class="baglanti" viewBox="0 0 300 200" preserveAspectRatio="none"><path d="M4 196 C 90 180, 200 110, 296 6" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6 8" vector-effect="non-scaling-stroke"/></svg>
-              <span class="kesik" aria-hidden="true">✕</span>
-              <div class="bulut">
-                <svg viewBox="0 0 120 80"><path d="M32 68h58a20 20 0 0 0 2-39.9A28 28 0 0 0 38.5 22 23 23 0 0 0 32 68Z" fill="rgba(148,163,184,.06)" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg>
-                <span class="parca" style="--x:-40px;--y:-30px"></span><span class="parca" style="--x:30px;--y:-46px"></span><span class="parca" style="--x:52px;--y:10px"></span>
-                <span class="parca" style="--x:-56px;--y:16px"></span><span class="parca" style="--x:6px;--y:-60px"></span><span class="parca" style="--x:-14px;--y:40px"></span>
-              </div>
-              <div class="bilgisayar">
-                <div class="ekran-cerceve">
-                  <div class="kasa">
-                    <svg viewBox="0 0 120 140">
-                      <path class="kilit-kol" d="M34 64V44a26 26 0 0 1 52 0v20" fill="none" stroke="url(#kalkan-g)" stroke-width="9" stroke-linecap="round"/>
-                      <rect x="16" y="62" width="88" height="70" rx="16" fill="rgba(56,189,248,.1)" stroke="url(#kalkan-g)" stroke-width="3"/>
-                      <circle cx="60" cy="92" r="8" fill="#38bdf8"/><path d="M60 98v14" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-                    </svg>
-                    <span class="kasa-halka"></span>
-                  </div>
-                  <span class="kasa-etiket">AES-256</span>
-                </div>
-                <div class="taban"></div>
-                <small>Sizin bilgisayarınız</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <!-- ================= DETAYLAR ================= -->
-    <section class="bolum sorunlar" id="sorunlar" aria-labelledby="sorunlar-baslik">
-      <div class="bolum-bas gorun" data-devami="ozellikler.html"><h2 id="sorunlar-baslik" data-metin="sorunlar.baslik"></h2><p data-metin="sorunlar.alt"></p></div>
-      <div class="sorun-izgara" id="sorun-izgara"></div>
-    </section>
-
     <section class="bolum nasil" id="nasil" aria-labelledby="nasil-baslik">
       <div class="bolum-bas gorun" data-devami="nasil-calisir.html"><h2 id="nasil-baslik" data-metin="nasil.baslik"></h2><p data-metin="nasil.alt"></p></div>
       <ol class="surec" id="surec"></ol>
-    </section>
-
-    <section class="bolum ozellikler" id="ozellikler" aria-labelledby="ozellikler-baslik">
-      <div class="bolum-bas gorun" data-devami="ozellikler.html"><h2 id="ozellikler-baslik" data-metin="ozellikler.baslik"></h2><p data-metin="ozellikler.alt"></p></div>
-      <dl class="sayaclar" id="sayaclar"></dl>
-      <div class="kart-izgara" id="ozellik-kartlari"></div>
-    </section>
-
-    <section class="bolum guvenlik" id="guvenlik" aria-labelledby="guvenlik-baslik">
-      <div class="bolum-bas gorun" data-devami="guvenlik.html"><h2 id="guvenlik-baslik" data-metin="guvenlik.baslik"></h2><p data-metin="guvenlik.alt"></p></div>
-      <ul class="guvenlik-listesi" id="guvenlik-listesi"></ul>
     </section>
 
     <section class="bolum yenilikler" id="yenilikler" aria-labelledby="yenilikler-baslik">

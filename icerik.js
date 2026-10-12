@@ -3,8 +3,7 @@
 //  - surum / tarih: alt bilgideki sürüm işareti.
 //  - menu: üst menü (sayfa = <body data-sayfa="…"> değeri; etkin bağlantı buna göre işaretlenir).
 //  - yenilikler: "Yenilikler" sayfası ve ana sayfa bölümü (EN YENİ EN ÜSTTE; her kayıt: surum, tarih, 3–5 kısa madde).
-//  - sahneler: ana sayfadaki kaydırmalı hikâye (başlık ≤ 8 sözcük, satır ≤ 15 sözcük). Sahnelerin görselleri index.html'dedir;
-//    sıraları ve "id"leri değişmemelidir.
+//  - vitrin: ana sayfadaki "Neler yapar" bölümü (üzerine gelince oynayan sahneler); faydalar: "Neden Nöbetçi" kutuları.
 //  - nasilSayfa: "Nasıl çalışır" sayfasının adımları. Her adım "kareler" ile gerçek ekran görüntüsünde sırayla yakınlaşır
 //    (ekran = assets/ekranlar/<ad>.webp, hedef = konumlar.js'teki ad ya da bolge: [x, y, g, y] 0–1); telefon: true ise
 //    Telegram telefonu; tur: "Bu adımı izle" düğmesinin açtığı tur bölümünün sırası (0'dan).
@@ -12,10 +11,10 @@
 //  - tur: "İzle" tanıtım turu. Her adım bir ekran görüntüsünü ve o görüntüdeki bir hedefi gösterir. yazi ≤ 8 sözcük.
 window.ICERIK = {
   // Yedek sürüm bilgisi: GitHub'dan son sürüm okunamazsa gösterilir (son yayımlanan sürüm).
-  surum: 'v1.9',
-  tarih: '9 Ekim 2026',
+  surum: 'v2.0',
+  tarih: '12 Ekim 2026',
 
-  marka: { ad: 'Nöbetçi', slogan: 'Siz uyurken, testleriniz nöbette.' },
+  marka: { ad: 'Nöbetçi', slogan: 'Testlerin Nöbetçisi' },
 
   menu: [
     { ad: 'Ana sayfa', adres: 'index.html', sayfa: 'ana' },
@@ -27,36 +26,56 @@ window.ICERIK = {
   ],
 
   kahraman: {
-    baslik: 'Siz uyurken, testleriniz nöbette.',
-    alt: 'Kod yazmadan web, servis ve veri testleri. Kendi bilgisayarınızda.',
+    baslik: 'Testlerin Nöbetçisi',
     dugme: 'İzle',
-    dugmeNotu: '90 saniyelik tur',
-    // Canlı mini arayüz (sağdaki döngü)
-    kosuAdi: 'Gece nöbeti · TEST',
-    kilitNotu: 'Gece nöbeti sürüyor',
-    adimlar: ['Müşteri kaydı', 'Sipariş', 'Sepet onayı', 'Ürün listesi', 'Kullanıcı profili'],
-    kalanAdim: 2,
-    bildirimler: {
-      kaldi: '❌ 1 test kaldı',
-      kaldiAyrinti: 'Sepet onayı · TEST',
-      tekrar: '↻ Tekrar koş',
-      kosuyor: '⏳ Koşuyor…',
-      gecti: '✅ Geçti',
-      gectiAyrinti: '5 / 5 senaryo'
-    }
+    // Sahnedeki ekran kartları (6 tane; kısa adlar) ve durum etiketleri.
+    ekranlar: ['Müşteri kaydı', 'Sipariş', 'Ödeme', 'Ürün listesi', 'Kullanıcı profili', 'Sepet onayı'],
+    durum: { taraniyor: 'Taranıyor…', gecti: 'Geçti', hata: 'Hata bulundu', duzeldi: 'Düzeltildi' }
   },
 
-  tanitim: { etiket: 'Kısa tanıtım', baslik: '90 saniyede Nöbetçi', alt: 'Gerçek ekranlar. Tıklayın, baştan sona izleyin.' },
+  tanitim: { etiket: 'Kısa tanıtım', baslik: '2 dakikada Nöbetçi', alt: 'Gerçek ekranlar. Tıklayın, baştan sona izleyin.' },
 
-  sahneler: [
-    { id: 'tarama', ust: 'Ekran taraması', baslik: 'Ekran değişti mi? Nöbetçi fark eder.', satir: 'Yeni alan, değişen etiket, kaybolan seçenek — test kırılmadan önce görürsünüz.', rozet: 'Yeni alan' },
-    { id: 'kodsuz', ust: 'Girişi öğret', baslik: 'Kod yazmadan.', satir: 'Girişi bir kez gösterin; Nöbetçi adımları öğrenir, senaryoyu kurar.' },
-    { id: 'gece', ust: 'Planlı koşular', baslik: 'Gece 03:00.', satir: 'Siz uyurken koşar. Sabah özet hazırdır.', sabah: { baslik: 'Günaydın', satir: '58 / 60 test geçti', dikkat: '1 ekran dikkat istiyor' } },
-    { id: 'cep', ust: 'Telegram botu', baslik: 'Cebinizde.', satir: 'Telefondan koşturun, sonucu aynı mesajda izleyin.' },
-    { id: 'kasa', ust: 'Gizlilik', baslik: 'Verileriniz sizde.', satir: 'Her şey kendi bilgisayarınızda, şifreli kasada durur.', maddeler: ['Şifreli kasa', 'Bulut yok', 'İzinler kapalı başlar'] }
-  ],
+  // Ana sayfa "Neler yapar" vitrini: soldaki başlığın ya da sahnenin üzerine gelince animasyon oynar (dokunmatikte dokununca).
+  // id sırası serbesttir; her id'nin görseli index.html'de (.vitrin-panel[data-sahne]) ya da js/site.js'te (YENI_SAHNE) kuruludur.
+  // ad ≤ 4 sözcük, satir ≤ 10 sözcük. sure: animasyon süresi (ms).
+  vitrin: {
+    ust: 'Neler yapar',
+    baslik: 'Bütün test süreci, tek uygulamada.',
+    ipucu: 'Üzerine gelin',
+    ipucuDokun: 'Dokunun, izleyin',
+    liste: [
+      { id: 'tarama', ikon: 'tarama', ad: 'Ekran ekran tarar', satir: 'Alanları ve değişiklikleri kendisi bulur.', sure: 3400, rozet: 'Yeni alan' },
+      { id: 'oneri', ikon: 'oneri', ad: 'Senaryo önerir', satir: 'Eksik kalan durumları gerekçesiyle önerir.', sure: 3800,
+        baslik: '4 öneri, gerekçesiyle', ekle: 'Ekle', eklendi: 'Eklendi', sayac: 'Senaryo', ilk: 3,
+        oneriler: [['Sınır değer', 'Adet: 0 ve 1000'], ['Boş alan', 'E-posta boş bırakılırsa'], ['Geçersiz biçim', 'Telefon: 9 hane'], ['Kombinasyon', 'Şehir × teslimat türü']] },
+      { id: 'kodsuz', ikon: 'kod', ad: 'Kod yazmadan', satir: 'Girişi bir kez gösterin, formu doldurun.', sure: 4200 },
+      { id: 'akis', ikon: 'akis', ad: 'Kendi akışınız', satir: 'Ekran, servis ve SQL tek akışta.', sure: 3800,
+        baslik: 'Yeni sipariş · uçtan uca', palet: 'Adım ekle', sonuc: 'Akış geçti',
+        adimlar: [['ekran', 'Ekran', 'Sipariş formu'], ['servis', 'Servis', 'Stok kontrolü'], ['veri', 'SQL', 'Sipariş kaydı']] },
+      { id: 'pano', ikon: 'pano', ad: 'Size özel pano', satir: 'Kartları dizin; süreci tek ekrandan yönetin.', sure: 4000,
+        baslik: 'Özet panosu', basari: 'Başarı', bugun: 'Bugün', trend: 'Son 14 gece', servis: 'Servisler',
+        sql: 'Bekleyen sipariş', esik: 'Eşik aşıldı', bildirim: 'Bekleyen sipariş 25’i geçti' },
+      { id: 'ekip', ikon: 'ekip', ad: 'Ekiple paylaşın', satir: 'Bir kez yayınlayın, herkes tek tıkla günceller.', sure: 3800,
+        siz: 'Sizin Nöbetçi’niz', yayinla: 'Yayınla', guncelle: 'Güncelle', guncel: 'Güncel',
+        kisiler: ['Deniz', 'Ece', 'Mert'] },
+      { id: 'gece', ikon: 'saat', ad: 'Siz uyurken koşar', satir: 'Sabah özet hazır, sorun cebinizde.', sure: 4200,
+        sabah: { baslik: 'Günaydın', satir: '58 / 60 test geçti', dikkat: '1 ekran dikkat istiyor' } },
+      { id: 'kasa', ikon: 'kilit', ad: 'Verileriniz sizde', satir: 'Şifreli kasa, bulut yok.', sure: 3000 }
+    ]
+  },
 
-  // Telegram sohbeti (sahne 4, Nasıl çalışır ve turun Telegram bölümü)
+  // "Neden Nöbetçi": dört kısa fayda (buyuk ≤ 3 sözcük, satir ≤ 6 sözcük).
+  faydalar: {
+    baslik: 'Neden Nöbetçi?',
+    liste: [
+      { ikon: 'hedef', buyuk: 'Hata payı en aza', satir: 'Her ekran, her koşuda kontrol.' },
+      { ikon: 'kod', buyuk: '0 satır kod', satir: 'Formu doldurun, test hazır.' },
+      { ikon: 'pano', buyuk: 'Tek panel', satir: 'Tara, koş, izle, raporla.' },
+      { ikon: 'ekip', buyuk: 'Bütün ekip', satir: 'Bir kez kurun, herkes kullansın.' }
+    ]
+  },
+
+  // Telegram sohbeti (Nasıl çalışır, Özellikler ve turun Telegram bölümü)
   telegram: {
     botAdi: 'Nöbetçi',
     botDurum: 'bot',
@@ -68,19 +87,9 @@ window.ICERIK = {
     sonuc: '✅ Kitap siparişi geçti\nTEST · 38 sn · 4 / 4 adım'
   },
 
-  kapanis: { baslik: "Nöbetçi'yi izleyin", alt: 'Doksan saniye. Kurulum yok, kayıt yok.', dugme: 'İzle' },
+  kapanis: { baslik: "Nöbetçi'yi izleyin", alt: 'İki dakika. Kurulum yok, kayıt yok.', dugme: 'İzle' },
 
-  // Ana sayfadaki kısa bölümler (her biri kendi sayfasına bağlanır)
-  sorunlar: {
-    baslik: 'Neyi çözer?',
-    alt: 'Testlerin en yorucu üç hâli.',
-    liste: [
-      { sorun: 'Ekran değişti, testler sessizce kırıldı.', cozum: 'Nöbetçi ekranı tarar, farkı gösterir; tek tıkla modele işlersiniz.' },
-      { sorun: 'Test yazmak kod bilgisi istiyor.', cozum: 'Formu doldurun; senaryo, giriş ve kontroller hazır.' },
-      { sorun: 'Gece koşusunu sabah kimse görmüyor.', cozum: 'Pano, uyarı kuralları ve Telegram; sorun size gelir.' }
-    ]
-  },
-
+  // Ana sayfadaki kısa bölüm (Nasıl çalışır sayfasına bağlanır)
   nasil: {
     baslik: 'Nasıl çalışır',
     alt: 'Beş adım. İlki bir dakika sürer.',
@@ -93,47 +102,13 @@ window.ICERIK = {
     ]
   },
 
-  ozellikler: {
-    baslik: 'Özellikler',
-    alt: 'Bir test ekibinin ihtiyaç duyduğu her şey, tek uygulamada.',
-    sayaclar: [
-      { deger: 3, son: '', etiket: 'test türü: web · servis · SQL' },
-      { deger: 256, son: '-bit', etiket: 'AES şifreli yerel kasa' },
-      { deger: 0, son: '', etiket: 'bulut sunucusu' },
-      { deger: 1, son: ' kez', etiket: 'girişi öğretmeniz yeter' }
-    ],
-    kartlar: [
-      { ikon: 'ekran', ad: 'Web ekranları', metin: 'Ekran modeli, çok adımlı formlar, bağlı listeler.' },
-      { ikon: 'servis', ad: 'SOAP ve REST', metin: 'Servis senaryoları, yanıt kontrolleri, uçtan uca akışlar.' },
-      { ikon: 'veri', ad: 'SQL kontrolleri', metin: 'Koşudan sonra veritabanında doğrulama, yalnız okuma.' },
-      { ikon: 'tarama', ad: 'Ekran taraması', metin: 'Arayüz değişince bulgular; kabul et ya da reddet.' },
-      { ikon: 'saat', ad: 'Planlı koşular', metin: 'Gece, hafta sonu, her sabah. Kaçan koşu uyarısı.' },
-      { ikon: 'pano', ad: 'Özet panosu', metin: 'Trend, dikkat kartları ve uyarı kuralları.' },
-      { ikon: 'telefon', ad: 'Telegram botu', metin: 'Telefondan koşturun, uyarıyı anında alın.' },
-      { ikon: 'zil', ad: 'Bildirim merkezi', metin: 'Uyarı ve koşu sonucu tek zilde.' },
-      { ikon: 'rapor', ad: 'PDF raporlar', metin: 'Döneme göre rapor; kişisel veri maskeli.' }
-    ]
-  },
-
-  guvenlik: {
-    baslik: 'Güvenlik',
-    alt: 'Veriniz bilgisayarınızdan hiç ayrılmaz.',
-    maddeler: [
-      { ad: 'Şifreli kasa', metin: 'Parolalar, 2FA anahtarları ve ortam adresleri AES-256 ile şifrelenir.' },
-      { ad: 'Bulut yok', metin: 'Sunucu sizin bilgisayarınızdır; hiçbir veri dışarı gönderilmez.' },
-      { ad: 'İzinler kapalı başlar', metin: 'Tarayıcı açma, dış gönderim, Telegram komutu: siz açana kadar kapalı.' },
-      { ad: 'Canlı ortam onayı', metin: 'Canlı ortamda her koşu ayrıca onay ister.' },
-      { ad: 'Kişisel veri maskesi', metin: 'Rapor ve ekranlarda kişisel veriler maskelenir.' }
-    ]
-  },
-
   yenilikler: {
     baslik: 'Yenilikler',
     alt: 'Her sürümde neler değişti.',
     // EN YENİ EN ÜSTTE. yakinda: true → henüz yayımlanmadı ("Yakında" rozeti; yeni sürüm çıkınca maddeleri o sürüme taşıyın).
     liste: [
       {
-        surum: 'Sıradaki sürüm', tarih: 'Yakında', yakinda: true,
+        surum: 'v2.0', tarih: '12 Ekim 2026',
         maddeler: [
           'Ortamlar ve giriş tek sayfada: adım adım sihirbaz, ortam başına "Hesap"',
           'Telegram botu: telefondan komutla koşu ve anlık bildirim',
@@ -188,9 +163,8 @@ window.ICERIK = {
         surum: 'v1.5.1', tarih: '2 Ekim 2026',
         maddeler: [
           'Güvenli tıklama: gönderim düğmesine asla iki kez basılmaz',
-          'Bağlı listeler (il → ilçe gibi) kendiliğinden bulunur',
-          'Site pencereleri testi kilitlemez; dosya alanları desteklenir',
-          '16 farklı örnek ekran türünde baştan sona denendi'
+          'Bağlı listeler kendiliğinden bulunur',
+          'Site pencereleri testi kilitlemez; dosya alanları desteklenir'
         ]
       },
       {
@@ -270,8 +244,10 @@ window.ICERIK = {
     buBilgisayar: 'Bu bilgisayar',
     dosyalar: {
       windows: { ad: 'Nobetci-windows.zip', dugme: 'Windows için indir', not: 'Windows 10/11 · 64 bit' },
-      macArm: { ad: 'Nobetci-mac-arm64.tar.gz', dugme: 'Mac için indir', not: 'Apple Silicon · macOS 14+' },
-      macIntel: { ad: 'Nobetci-mac-x64.tar.gz', dugme: 'Mac için indir', not: 'Intel · macOS 14+', baglanti: 'Intel Mac için' }
+      macArm: { ad: 'Nobetci-mac-arm64.tar.gz', dugme: 'M serisi Mac için indir', not: 'M1, M2, M3, M4 · macOS 14+' },
+      macIntel: { ad: 'Nobetci-mac-x64.tar.gz', dugme: 'Intel Mac için indir', not: 'Intel işlemcili · macOS 14+', baglanti: 'Intel Mac için indir' },
+      // Mac kartında hangisinin seçileceğini anlatan tek satır.
+      macHangisi: 'Hangisi sizinki? Elma menüsü › Bu Mac Hakkında: "Yonga: Apple M…" yazıyorsa üstteki, "İşlemci: Intel" yazıyorsa alttaki.'
     },
     digerleri: 'Diğer sistemler',
     kurulumNotu: 'Kurulum adımları indirilen dosyanın içinde.',
@@ -285,24 +261,26 @@ window.ICERIK = {
   nasilSayfa: {
     ust: 'Süreç',
     baslik: 'Kurulumdan sabah raporuna.',
-    alt: 'Sekiz adım. Aşağı kaydırın.',
+    alt: 'Dokuz adım. Görselin üzerine gelin, izleyin.',
     izle: 'Bu adımı izle',
     adimlar: [
-      { ad: 'Ortam ekle', baslik: 'Önce adres.', satir: 'TEST, HAZIRLIK, CANLI: test edeceğiniz ortamı sihirbazla ekleyin.', tur: 0,
+      { ad: 'İlk açılış', baslik: 'Yedekten ya da sıfırdan.', satir: 'Yedeğinizi yükleyin ya da yeni proje başlatıp kasa parolanızı belirleyin.', tur: 0,
+        kareler: [{ ekran: 'ilk-acilis', hedef: 'secenekler', not: 'Yedek yükle · Yeni proje' }, { ekran: 'ilk-kasa', hedef: 'form', not: 'Kasa parolası' }] },
+      { ad: 'Ortam ekle', baslik: 'Önce adres.', satir: 'TEST, HAZIRLIK, CANLI: test edeceğiniz ortamı sihirbazla ekleyin.', tur: 1,
         kareler: [{ ekran: 'ortamlar', hedef: 'ortamEkle', not: 'Ortam ekle' }, { ekran: 'ortam-sihirbazi', hedef: 'adres', not: 'Adres ve tür' }] },
-      { ad: 'Girişi öğret', baslik: 'Girişi bir kez gösterin.', satir: 'Siz giriş yaparsınız; Nöbetçi adımları kaydeder. 2FA dahil.', tur: 1,
+      { ad: 'Girişi öğret', baslik: 'Girişi bir kez gösterin.', satir: 'Siz giriş yaparsınız; Nöbetçi adımları kaydeder. 2FA dahil.', tur: 2,
         kareler: [{ ekran: 'ortamlar', hedef: 'girisiOgret', not: 'Girişi öğret' }, { ekran: 'giris-ogret', hedef: 'ogret', not: 'Tek tık, kayıt başlar' }] },
-      { ad: 'Ekranı tara', baslik: 'Nöbetçi ekranı tanır.', satir: 'Alanları, adımları, seçenekleri bulur; ekran değişince fark eder.', tur: 2,
+      { ad: 'Ekranı tara', baslik: 'Nöbetçi ekranı tanır.', satir: 'Alanları, adımları, seçenekleri bulur; ekran değişince fark eder.', tur: 3,
         kareler: [{ ekran: 'ekran-ekle', hedef: 'tarama', not: 'Nöbetçi taraması' }, { ekran: 'degisiklikler', hedef: 'yeniAlan', not: 'Yeni alan bulundu' }] },
-      { ad: 'Senaryo', baslik: 'Form doldurun, kod yazmayın.', satir: 'Değerleri girin; hazırlık kontrolü eksikleri anında söyler.', tur: 3,
+      { ad: 'Senaryo', baslik: 'Form doldurun, kod yazmayın.', satir: 'Değerleri girin; hazırlık kontrolü eksikleri anında söyler.', tur: 4,
         kareler: [{ ekran: 'senaryo', hedef: 'baslik', not: 'Değerler' }, { ekran: 'senaryo', hedef: 'hazirlik', not: 'Hazırlık kontrolü' }] },
-      { ad: 'Koş', baslik: 'Canlı izleyin.', satir: 'Her senaryo sırayla koşar; dışarıdan başlayan koşular da ekranda görünür.', tur: 4,
+      { ad: 'Koş', baslik: 'Canlı izleyin.', satir: 'Her senaryo sırayla koşar; dışarıdan başlayan koşular da ekranda görünür.', tur: 5,
         kareler: [{ ekran: 'senaryolar', hedef: 'kosuyuBaslat', not: 'Koşuyu başlat' }, { ekran: 'kosu', hedef: 'panel', bolge: [0.628, 0.097, 0.36, 0.52], not: 'Koşu göstergesi' }] },
-      { ad: 'Sonuçlar ve pano', baslik: 'Bir bakışta durum.', satir: 'Başarı oranı, trend ve SQL kartları; eşik aşılınca kart uyarır.', tur: 5,
+      { ad: 'Sonuçlar ve pano', baslik: 'Bir bakışta durum.', satir: 'Başarı oranı, trend ve SQL kartları; eşik aşılınca kart uyarır.', tur: 6,
         kareler: [{ ekran: 'pano', hedef: 'ozetKutulari', not: 'Özet kutuları' }, { ekran: 'pano-sql', hedef: 'rozet', not: 'Eşik aşıldı: 1 uyarıda' }] },
-      { ad: 'Telegram ve bildirimler', baslik: 'Sorun size gelir.', satir: 'Telefondan koşturun; uyarı ve sonuç hem cebinizde hem zilde.', tur: 6, telefon: true,
+      { ad: 'Telegram ve bildirimler', baslik: 'Sorun size gelir.', satir: 'Telefondan koşturun; uyarı ve sonuç hem cebinizde hem zilde.', tur: 7, telefon: true,
         kareler: [{ ekran: 'bildirim-merkezi', hedef: 'panel', not: 'Bildirim merkezi' }] },
-      { ad: 'Planlı koşular', baslik: 'Her gece, kendiliğinden.', satir: 'Saati seçin; kaçan koşu bile sabah panoda uyarı olarak görünür.', tur: 8,
+      { ad: 'Planlı koşular', baslik: 'Her gece, kendiliğinden.', satir: 'Saati seçin; kaçan koşu bile sabah panoda uyarı olarak görünür.', tur: 9,
         kareler: [{ ekran: 'planli', hedef: 'kural', bolge: [0.2, 0.31, 0.62, 0.17], not: 'Gece nöbeti · 03:00' }] }
     ]
   },
@@ -324,39 +302,39 @@ window.ICERIK = {
     ],
     // medya: { ekran, hedef | bolge } gerçek ekran kesiti ya da { mikro: '<tür>' } küçük döngü (örnek metinleri "ornek"te).
     kartlar: [
-      { ikon: 'ekran', ad: 'Ekran testleri', metin: 'Web formlarını modelden koşturur.', tur: 3,
+      { ikon: 'ekran', ad: 'Ekran testleri', metin: 'Web formlarını modelden koşturur.', tur: 4,
         maddeler: ['Çok adımlı formlar ve bağlı listeler', 'Koşullu alanlar, iş kuralı mesajları', 'Playwright koduna dışa aktarma'],
-        medya: { ekran: 'ekran-modeli', bolge: [0.19, 0.25, 0.56, 0.5] } },
-      { ikon: 'servis', ad: 'Servis testleri', metin: 'SOAP, REST ve uçtan uca akışlar.', tur: 4,
+        medya: { ekran: 'ekran-modeli', bolge: [0.2, 0.265, 0.525, 0.55] } },
+      { ikon: 'servis', ad: 'Servis testleri', metin: 'SOAP, REST ve uçtan uca akışlar.', tur: 10,
         maddeler: ['WSDL ve cURL’den senaryo', 'Yanıt kontrolleri: durum kodu, JSON, XML', 'Servisleri zincirleyen uçtan uca akış'],
-        medya: { ekran: 'servis', bolge: [0.2, 0.06, 0.8, 0.42] } },
-      { ikon: 'veri', ad: 'SQL kontrolleri', metin: 'Veritabanını okur; panoda ve koşuda.', tur: 5,
+        medya: { ekran: 'servis', bolge: [0.198, 0.26, 0.786, 0.27] } },
+      { ikon: 'veri', ad: 'SQL kontrolleri', metin: 'Veritabanını okur; panoda ve koşuda.', tur: 6,
         maddeler: ['Yalnız okuma bağlantısı', 'Panoda tablo, sayı ve grafik kartları', 'Koşudan sonra veritabanında doğrulama'],
-        medya: { ekran: 'pano-sql', bolge: [0.205, 0.4, 0.45, 0.55] } },
-      { ikon: 'tarama', ad: 'Değişiklik bulguları', metin: 'Ekran değişince önce siz görürsünüz.', tur: 2,
+        medya: { ekran: 'pano-sql', bolge: [0.2, 0.395, 0.457, 0.53] } },
+      { ikon: 'tarama', ad: 'Değişiklik bulguları', metin: 'Ekran değişince önce siz görürsünüz.', tur: 3,
         maddeler: ['Yeni alan, değişen etiket, kaybolan seçenek', 'Kabul et ya da reddet; model güncellenir', 'Etkilenen senaryolar listelenir'],
-        medya: { ekran: 'degisiklikler', bolge: [0.19, 0.12, 0.8, 0.55] } },
-      { ikon: 'saat', ad: 'Planlı koşular', metin: 'Gece, hafta sonu, her sabah.', tur: 8,
+        medya: { ekran: 'degisiklikler', bolge: [0.198, 0.21, 0.786, 0.58] } },
+      { ikon: 'saat', ad: 'Planlı koşular', metin: 'Gece, hafta sonu, her sabah.', tur: 9,
         maddeler: ['Gün ve saat seçimi, her N saatte bir', 'Kaçan koşu panoda uyarı olur', 'Kasa kilitliyken de çalışabilir (izinle)'],
-        medya: { ekran: 'planli', bolge: [0.19, 0.23, 0.64, 0.24] } },
-      { ikon: 'pano', ad: 'Pano uyarıları', metin: 'Eşik aşılınca haber verir.', tur: 6,
+        medya: { ekran: 'planli', bolge: [0.142, 0.24, 0.716, 0.25] } },
+      { ikon: 'pano', ad: 'Pano uyarıları', metin: 'Eşik aşılınca haber verir.', tur: 7,
         maddeler: ['Kartta “Bildirimler”: kural bir cümle', 'Eşik, hızlı artış, yeni satır, veri yok', 'Önizle: bildirim göndermeden dene'],
-        medya: { ekran: 'pano-uyari', bolge: [0.21, 0.17, 0.44, 0.4] } },
-      { ikon: 'telefon', ad: 'Telegram botu', metin: 'Telefondan koşun, sonucu alın.', tur: 7,
+        medya: { ekran: 'pano-uyari', bolge: [0.2, 0.105, 0.785, 0.53] } },
+      { ikon: 'telefon', ad: 'Telegram botu', metin: 'Telefondan koşun, sonucu alın.', tur: 8,
         maddeler: ['/senaryolar ile seç, koştur', 'Sonuç aynı mesajda güncellenir', 'Komutlar izinle açılır'],
         medya: { mikro: 'telefon' } },
-      { ikon: 'zil', ad: 'Bildirim merkezi', metin: 'Uyarı, düzelme, koşu sonu: tek zilde.', tur: 6,
+      { ikon: 'zil', ad: 'Bildirim merkezi', metin: 'Uyarı, düzelme, koşu sonu: tek zilde.', tur: 7,
         maddeler: ['Okunmamışlar zilde sayılır', 'Bilgisayar bildirimi ve ses (isteğe bağlı)', 'Telegram ve webhook’a da gider'],
         medya: { ekran: 'bildirim-merkezi', hedef: 'panel' } },
-      { ikon: 'rapor', ad: 'PDF raporlar', metin: 'Döneme göre, maskeli rapor.', tur: 5,
+      { ikon: 'rapor', ad: 'PDF raporlar', metin: 'Döneme göre, maskeli rapor.', tur: 11,
         maddeler: ['Ekran, servis ya da tüm proje', 'Önceki dönemle karşılaştırma', 'Kişisel veriler maskelenir'],
-        medya: { ekran: 'raporlar', bolge: [0.215, 0.3, 0.47, 0.29] } },
-      { ikon: 'ekip', ad: 'Ekip ve roller', metin: 'Kim neyi açar, siz seçersiniz.', tur: 0,
+        medya: { ekran: 'raporlar', bolge: [0.2, 0.22, 0.785, 0.39] } },
+      { ikon: 'ekip', ad: 'Ekip ve roller', metin: 'Kim neyi açar, siz seçersiniz.', tur: 12,
         maddeler: ['Admin ve Kullanıcı rolleri', 'Liste kasada şifreli', 'Ortak klasörle ekip paylaşımı'],
-        medya: { ekran: 'ekip', bolge: [0.205, 0.53, 0.5, 0.45] } },
-      { ikon: 'yedek', ad: 'Yedekleme', metin: 'Tek dosya, şifreli yedek.', tur: 0,
+        medya: { ekran: 'ekip', bolge: [0.2, 0.6, 0.72, 0.385] } },
+      { ikon: 'yedek', ad: 'Yedekleme', metin: 'Tek dosya, şifreli yedek.', tur: 13,
         maddeler: ['.tayedek: kasa parolasıyla şifreli', 'Otomatik yedek ve saklama süresi', 'Başka bilgisayara tek adımda taşıma'],
-        medya: { ekran: 'yedekleme', bolge: [0.21, 0.17, 0.45, 0.24] } }
+        medya: { ekran: 'yedekleme', bolge: [0.2, 0.105, 0.72, 0.29] } }
     ]
   },
 
@@ -387,8 +365,14 @@ window.ICERIK = {
   tur: {
     baslik: 'Nöbetçi turu',
     // Ana sayfadaki kısa döngü: [bölüm sırası, adım sırası]
-    tanitim: [[1, 0], [2, 1], [4, 2], [5, 1]],
+    tanitim: [[2, 0], [3, 1], [5, 2], [6, 1]],
     bolumler: [
+      { ad: 'İlk açılış', adimlar: [
+        { ekran: 'ilk-acilis', hedef: 'secenekler', yazi: 'İlk açılışta iki yol var' },
+        { ekran: 'ilk-acilis', hedef: 'yedekYukle', yazi: 'Yedeğiniz varsa tek dosyayla yükleyin' },
+        { ekran: 'ilk-acilis', hedef: 'yeniProje', tik: true, yazi: 'Yoksa yeni proje başlatın' },
+        { ekran: 'ilk-kasa', hedef: 'form', yazi: 'Önce kasa parolanızı belirleyin' }
+      ] },
       { ad: 'Ortam ekle', adimlar: [
         { ekran: 'ortamlar', hedef: 'ortamEkle', tik: true, yazi: 'Önce test ortamınızı ekleyin' },
         { ekran: 'ortam-sihirbazi', hedef: 'adres', yazi: 'Adresi yazın, türünü seçin' }
@@ -427,6 +411,18 @@ window.ICERIK = {
       ] },
       { ad: 'Planlı koşular', adimlar: [
         { ekran: 'planli', hedef: 'kural', bolge: [0.2, 0.31, 0.62, 0.17], yazi: 'Her gece 03:00, kendiliğinden' }
+      ] },
+      { ad: 'Servis testleri', adimlar: [
+        { ekran: 'servis', hedef: 'tablo', yazi: 'SOAP ve REST senaryoları tek listede' }
+      ] },
+      { ad: 'PDF raporlar', adimlar: [
+        { ekran: 'raporlar', hedef: 'tablo', yazi: 'Döneme göre rapor, tek tıkla indir' }
+      ] },
+      { ad: 'Ekip ve roller', adimlar: [
+        { ekran: 'ekip', hedef: 'bolum', yazi: 'Kim Admin, kim Kullanıcı: siz seçin' }
+      ] },
+      { ad: 'Yedekleme', adimlar: [
+        { ekran: 'yedekleme', hedef: 'cizelge', yazi: 'Ne zaman ne silinir, siz belirleyin' }
       ] }
     ]
   },
