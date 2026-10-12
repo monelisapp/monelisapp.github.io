@@ -205,90 +205,182 @@
     }
   }
 
-  // ------------------------------------------------------------------ kahraman: nöbet sahnesi
-  // Kalkanın çevresinde ekran kartları; tarama ışını sırayla her birine uğrar (tarar → yeşil). Her turda bir kartta hata
-  // bulunur: kırmızı yanar, kalkan dalga yayar, hata düzelir. Sahne yalnız görünürken döner; fare derinlik verir.
-  async function nobetSahnesi() {
-    const kok = $('#nobet');
-    if (!kok) return;
-    const kap = $('#nobet-ekranlar'); const isinlar = $('#nobet-isinlar'); const dalga = $('#nobet-dalga');
-    const dar = () => innerWidth <= 700;
-    const K = ICERIK.kahraman || {};
-    const N = 6;
-    // Her kartın iç düzeni (yazısız iskelet): satır genişlikleri; bazılarında grafik ya da düğme.
-    const DUZEN = [[70, 45, 85, 'd'], ['g'], [55, 80, 40, 65], ['t'], [60, 90, 50, 'd'], [75, 35, 'g']];
-    const kartlar = DUZEN.map((d, i) => {
-      const k = el('div', 'nobet-ekran');
-      k.style.setProperty('--i', String(i));
-      const ust = el('div', 'ne-ust'); ust.append(el('i'), el('i'), el('i'), el('span', 'ne-ad', K.ekranlar?.[i] || ''), el('b', 'ne-durum'));
-      const govde = el('div', 'ne-govde');
-      for (const x of d) {
-        if (x === 'g') { const g = el('div', 'ne-grafik'); for (let j = 0; j < 7; j++) { const c = el('span'); c.style.height = `${30 + ((j * 37 + i * 13) % 65)}%`; g.append(c); } govde.append(g); }
-        else if (x === 't') { const t = el('div', 'ne-tablo'); for (let j = 0; j < 4; j++) t.append(el('span')); govde.append(t); }
-        else if (x === 'd') govde.append(el('span', 'ne-dugme'));
-        else { const s = el('span', 'ne-satir'); s.style.width = `${x}%`; govde.append(s); }
-      }
-      const etiket = el('span', 'ne-etiket');
-      k.append(ust, govde, el('span', 'ne-tarayici'), etiket);
-      kap.append(k);
-      const cizgi = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-      cizgi.setAttribute('x1', '50'); cizgi.setAttribute('y1', '50');
-      isinlar.append(cizgi);
-      return { k, cizgi, etiket };
-    });
-    const durum = (x, ad) => { x.k.dataset.durum = ad || ''; x.etiket.textContent = ad ? (K.durum?.[ad] || '') : ''; };
-    // Kartlar sahnenin içinde kalır (başlığa ve düğmeye binmez): yarıçap, kart boyutu ve sahne ölçüsüne göre.
-    const yerlestir = () => {
-      const W = kok.clientWidth || 1; const H = kok.clientHeight || 1;
-      const kw = kartlar[0].k.offsetWidth * 1.08; const kh = kartlar[0].k.offsetHeight * 1.08;
-      const rx = Math.min(dar() ? 36 : 40, 50 - ((kw / 2 + 6) / W) * 100);
-      const ry = Math.max(12, Math.min(38, 50 - ((kh / 2 + 6) / H) * 100));
-      kartlar.forEach(({ k, cizgi }, i) => {
-        const a = (i / N) * Math.PI * 2 - Math.PI / 2 + Math.PI / N;
-        const x = 50 + Math.cos(a) * rx; const y = 50 + Math.sin(a) * ry;
-        k.style.left = `${x}%`; k.style.top = `${y}%`;
-        k.style.setProperty('--z', String(0.6 + ((i * 3) % 4) * 0.13));
-        cizgi.setAttribute('x2', String(x)); cizgi.setAttribute('y2', String(y));
+  // ------------------------------------------------------------------ kahraman: canlı demo (Tara → Öner → Koş → Yakala → Raporla)
+  // Sahne sabit tasarım ölçüsünde (1080×580) kurulur ve kutuya sığacak kadar ölçeklenir. Her aşama kendi ekranını f(p) ile
+  // oynatır; adım çubuğu ilerlemeyi gösterir. Sahne yalnız görünürken döner; adıma tıklayınca o aşamaya geçer.
+  const DEMO_G = 1080; const DEMO_Y = 580;
+  const DEMO_EKRAN = {
+    tara(e, d) {
+      e.innerHTML = '<div class="dt-form"><div class="dt-baslik">Müşteri kaydı</div><div class="dt-alanlar"></div><span class="dt-isin"></span></div><div class="dt-yan"><small></small><b class="dt-sayi">0</b><ul class="dt-liste"></ul><span class="dt-hazir"></span></div>';
+      $('.dt-yan small', e).textContent = d.bulunan || '';
+      $('.dt-hazir', e).textContent = `✓ ${d.modelHazir || ''}`;
+      const alanlar = (d.alanlar || []).map(([ad, tur]) => {
+        const a = el('div', 'dt-alan');
+        a.append(el('label', '', ad), el('span', 'dt-girdi'), el('span', 'dt-cip', tur));
+        $('.dt-alanlar', e).append(a);
+        const li = el('li', '', ad); li.append(el('em', '', tur)); $('.dt-liste', e).append(li);
+        return { a, li };
       });
-    };
-    yerlestir();
-    new ResizeObserver(yerlestir).observe(kok);
-    // Fare derinliği: kartlar ve halkalar farklı katmanlarda hafifçe kayar.
-    const derinlik = $('#nobet-derinlik');
-    if (INCE_ISARETCI && !AZ_HAREKET) {
-      $('#kahraman').addEventListener('pointermove', (e) => {
-        derinlik.style.setProperty('--px', String((e.clientX / innerWidth - 0.5) * 2));
-        derinlik.style.setProperty('--py', String((e.clientY / innerHeight - 0.5) * 2));
+      const isin = $('.dt-isin', e); const sayi = $('.dt-sayi', e); const yan = $('.dt-yan', e);
+      return (p) => {
+        const y = harita(p, 0.06, 0.7);
+        isin.style.top = `${4 + y * 92}%`; isin.style.opacity = p > 0.04 && p < 0.74 ? '1' : '0';
+        let n = 0;
+        alanlar.forEach((x, i) => { const b = p > 0.1 + i * 0.1; x.a.classList.toggle('bulundu', b); x.li.classList.toggle('acik', b); if (b) n++; });
+        sayi.textContent = String(n);
+        yan.classList.toggle('hazir', p > 0.8);
+      };
+    },
+    oner(e, d) {
+      e.innerHTML = '<div class="do-bas"><span class="do-yildiz"></span><b></b><span class="do-sayac"><small></small><b>3</b></span></div><div class="do-liste"></div>';
+      $('.do-yildiz', e).innerHTML = ikon('oneri');
+      $('.do-bas > b', e).textContent = d.oneriBaslik || '';
+      $('.do-sayac small', e).textContent = d.senaryo || '';
+      const sayi = $('.do-sayac b', e); const sayac = $('.do-sayac', e);
+      const satirlar = (d.oneriler || []).map(([tur, metin]) => {
+        const s = el('div', 'do-satir'); const b = el('span', 'do-ekle', d.ekle || '');
+        s.append(el('span', 'do-tur', tur), el('span', 'do-metin', metin), b);
+        $('.do-liste', e).append(s);
+        return { s, b };
       });
+      let son = -1;
+      return (p) => {
+        let n = 0;
+        satirlar.forEach((x, i) => {
+          x.s.classList.toggle('acik', p > 0.06 + i * 0.09);
+          const ek = p > 0.5 + i * 0.1;
+          x.s.classList.toggle('eklendi', ek); x.b.textContent = ek ? `✓ ${d.eklendi || ''}` : (d.ekle || '');
+          if (ek) n++;
+        });
+        if (n !== son) { sayi.textContent = String(3 + n); if (n > son && son >= 0) { sayac.classList.remove('vurus'); void sayac.offsetWidth; sayac.classList.add('vurus'); } son = n; }
+      };
+    },
+    kos(e, d) {
+      e.innerHTML = '<div class="dk-ust"><span class="dk-donen"></span><b></b><span class="dk-yuzde">%0</span></div><div class="dk-cubuk"><span></span></div><ol class="dk-liste"></ol>';
+      $('.dk-ust b', e).textContent = d.kosuAdi || '';
+      const cubuk = $('.dk-cubuk span', e); const yuzde = $('.dk-yuzde', e); const ust = $('.dk-ust', e);
+      const satirlar = (d.senaryolar || []).map((ad, i) => { const li = el('li', '', ad); li.append(el('span', 'dk-sure', `${(2.1 + ((i * 7) % 5) * 0.7).toFixed(1)} sn`)); $('.dk-liste', e).append(li); return li; });
+      const n = satirlar.length;
+      return (p) => {
+        let biten = 0;
+        satirlar.forEach((li, i) => {
+          const bas = 0.05 + i * 0.17; const bit = bas + 0.15;
+          const durum = p > bit ? (i === d.kalan ? 'kaldi' : 'gecti') : p > bas ? 'kosuyor' : '';
+          li.className = durum;
+          if (p > bit) biten++;
+        });
+        cubuk.style.width = `${(biten / n) * 100}%`; yuzde.textContent = `%${Math.round((biten / n) * 100)}`;
+        ust.classList.toggle('bitti', biten === n);
+      };
+    },
+    yakala(e, d) {
+      e.innerHTML = `<div class="dy-bas"><span class="dy-rozet"></span><b></b><span class="dy-tekrar"></span></div><p class="dy-neden"></p>
+        <div class="dy-karsilastir"><figure><figcaption></figcaption><div class="dy-ekran"><i></i><i></i><i></i><span class="dy-onay">✓ Ödeme onaylandı</span></div></figure>
+        <figure class="gorulen"><figcaption></figcaption><div class="dy-ekran"><i></i><i></i><i></i><span class="dy-bekliyor"></span><span class="dy-isaret"></span></div></figure></div>`;
+      $('.dy-bas b', e).textContent = d.hataBaslik || '';
+      $('.dy-neden', e).textContent = d.hataNeden || '';
+      $('.dy-karsilastir figure:first-child figcaption', e).textContent = d.beklenen || '';
+      $('.dy-karsilastir .gorulen figcaption', e).textContent = d.gorulen || '';
+      const rozet = $('.dy-rozet', e); const tekrar = $('.dy-tekrar', e); tekrar.textContent = `↻ ${d.tekrar || ''}`;
+      return (p) => {
+        e.classList.toggle('dy-acik', p > 0.04);
+        e.classList.toggle('dy-isaretli', p > 0.22);
+        tekrar.classList.toggle('basildi', p > 0.6 && p < 0.66);
+        const duzeldi = p > 0.74;
+        e.classList.toggle('dy-duzeldi', duzeldi);
+        rozet.textContent = duzeldi ? `✓ ${d.duzeldi || ''}` : `✕ ${d.kaldi || ''}`;
+      };
+    },
+    rapor(e, d) {
+      e.innerHTML = `<div class="dr-izgara"><div class="dr-kutu dr-basari"><small></small><b>%0</b></div><div class="dr-kutu dr-trend"><small></small><div class="cubuklar"></div></div>
+        <div class="dr-kutu"><small></small><b class="dr-ekran">0 / 60</b></div><div class="dr-kutu"><small></small><b class="dr-servis">0 / 12</b></div></div><div class="dr-sabah"><span class="gunes"></span><b></b></div>`;
+      const k = $$('.dr-kutu small', e); k[0].textContent = d.basari || ''; k[1].textContent = d.trend || ''; k[2].textContent = d.ekranlar || ''; k[3].textContent = d.servisler || '';
+      $('.dr-sabah b', e).textContent = d.sabah || '';
+      const VERI = [0.9, 1, 0.92, 1, 0.95, 0.88, 1, 0.97, 1, 1, 0.93, 1, 0.98, 1];
+      const cub = $('.cubuklar', e);
+      const cubuklar = VERI.map((x, i) => { const s = el('span'); s.style.height = `${x * 100}%`; if (i === VERI.length - 1) s.classList.add('son'); cub.append(s); return s; });
+      const basari = $('.dr-basari b', e); const ekr = $('.dr-ekran', e); const srv = $('.dr-servis', e); const sabah = $('.dr-sabah', e);
+      return (p) => {
+        const t = harita(p, 0.05, 0.45); const yum = 1 - Math.pow(1 - t, 3);
+        basari.textContent = `%${Math.round(97 * yum + (p > 0.75 ? 3 : 0))}`;
+        ekr.textContent = `${Math.round(60 * yum)} / 60`; srv.textContent = `${Math.round(12 * yum)} / 12`;
+        cubuklar.forEach((s, i) => s.style.setProperty('--b', String(harita(p, 0.08 + i * 0.025, 0.2 + i * 0.025))));
+        sabah.classList.toggle('acik', p > 0.62);
+      };
     }
-    if (AZ_HAREKET) { kartlar.forEach((x) => { x.k.classList.add('tamam'); durum(x, 'gecti'); }); return; }
-    let gorunur = true;
-    new IntersectionObserver(([g]) => { gorunur = g.isIntersecting; }).observe(kok);
-    const sira = async (ms) => { await bekle(ms); while (!gorunur || document.hidden) await bekle(300); };
-    let tur = 0;
-    for (;;) {
-      const hatali = (tur * 4 + 1) % N;
-      kartlar.forEach((x) => { x.k.classList.remove('tamam', 'hata', 'duzeldi'); durum(x, ''); });
-      await sira(500);
-      for (let i = 0; i < N; i++) {
-        const { k, cizgi } = kartlar[i];
-        k.classList.add('taraniyor'); cizgi.classList.add('acik'); durum(kartlar[i], 'taraniyor');
-        await sira(900);
-        k.classList.remove('taraniyor'); cizgi.classList.remove('acik');
-        k.classList.add(i === hatali ? 'hata' : 'tamam'); durum(kartlar[i], i === hatali ? 'hata' : 'gecti');
-        await sira(250);
+  };
+
+  function demoKur() {
+    const kok = $('#demo');
+    if (!kok) return;
+    const K = ICERIK.kahraman || {}; const d = K.demo || {};
+    const sahne = $('#demo-sahne'); const cerceve = $('#demo-cerceve'); const adimKap = $('#demo-adimlar');
+    sahne.innerHTML = `<div class="demo-pencere"><div class="dp-ust"><i></i><i></i><i></i><span class="dp-adres">demo-portal · TEST</span><span class="dp-canli"><b></b>canlı</span></div>
+      <div class="dp-govde"><nav class="dp-yan"></nav><div class="dp-ana"><div class="dp-yol"></div><div class="dp-ekranlar"></div></div></div>
+      <div class="dp-bildirim"><span class="dp-bildirim-ikon">${ikon('zil')}</span><span></span></div></div>
+      <div class="demo-telefon"><div class="dt-cerceve"><div class="dt-ekran"><div class="dt-ust"><svg aria-hidden="true"><use href="#kalkan"/></svg><b>Nöbetçi</b><small>bot</small></div><div class="dt-akis"></div></div></div></div>`;
+    $('.dp-bildirim span:last-child', sahne).textContent = d.bildirim || '';
+    const MENU = [['ekran', 'Ekranlar', 'tara'], ['oneri', 'Senaryolar', 'oner'], ['saat', 'Koşular', 'kos'], ['zil', 'Sonuçlar', 'yakala'], ['pano', 'Pano', 'rapor']];
+    const menu = MENU.map(([ik, ad, id]) => { const a = el('span', 'dp-menu'); a.innerHTML = ikon(ik); a.append(el('span', '', ad)); a.dataset.id = id; $('.dp-yan', sahne).append(a); return a; });
+    const yol = $('.dp-yol', sahne);
+    const balonlar = (d.telefon || []).map((m, i) => { const b = el('div', `dt-balon${i === 1 ? ' ben' : ''}`, m); $('.dt-akis', sahne).append(b); return b; });
+    const asamalar = (K.adimlar || []).filter((a) => DEMO_EKRAN[a.id]).map((a, i) => {
+      const ekran = el('div', `dp-ekran de-${a.id}`); $('.dp-ekranlar', sahne).append(ekran);
+      const f = DEMO_EKRAN[a.id](ekran, d);
+      const li = el('li'); const b = el('button', 'demo-adim'); b.type = 'button'; b.tabIndex = -1;
+      b.append(el('b', '', String(i + 1)), el('span', '', a.ad), el('i', 'demo-adim-cubuk')); li.append(b); adimKap.append(li);
+      return { a, ekran, f, b };
+    });
+    if (!asamalar.length) return;
+    // Ölçek: sahne tasarım ölçüsünde, çerçeveye sığdırılır.
+    // Hem genişliğe hem ilk ekranın kalan yüksekliğine sığar (pencere ve telefon ekranın altına taşmaz).
+    const olcekle = () => {
+      const ust = cerceve.getBoundingClientRect().top + scrollY;
+      const boy = innerHeight - ust - 20;
+      const s = Math.min(1, cerceve.clientWidth / DEMO_G, innerWidth > 700 ? Math.max(0.55, boy / DEMO_Y) : 1);
+      sahne.style.transform = `scale(${s})`; cerceve.style.height = `${DEMO_Y * s}px`;
+    };
+    olcekle(); new ResizeObserver(olcekle).observe(cerceve);
+    const telefon = $('.demo-telefon', sahne); const bildirim = $('.dp-bildirim', sahne);
+    let aktif = -1;
+    const goster = (i, p) => {
+      if (i !== aktif) {
+        asamalar.forEach((x, j) => { x.ekran.classList.toggle('acik', j === i); x.b.classList.toggle('etkin', j === i); x.b.classList.toggle('gecti', j < i); });
+        menu.forEach((m) => m.classList.toggle('etkin', m.dataset.id === asamalar[i].a.id));
+        yol.textContent = asamalar[i].a.yol || '';
+        aktif = i;
       }
-      // Hata yakalandı: kalkan dalga yayar, ışın hataya kilitlenir, kart yeşile döner.
-      const h = kartlar[hatali];
-      dalga.classList.remove('yay'); void dalga.offsetWidth; dalga.classList.add('yay');
-      h.cizgi.classList.add('acik', 'kilit');
-      await sira(1100);
-      h.k.classList.remove('hata'); h.k.classList.add('tamam', 'duzeldi'); durum(h, 'duzeldi');
-      h.cizgi.classList.remove('acik', 'kilit');
-      kok.classList.add('hepsi-tamam');
-      await sira(2200);
-      kok.classList.remove('hepsi-tamam');
-      tur++;
+      asamalar[i].f(p);
+      asamalar[i].b.style.setProperty('--ilerleme', String(p));
+      const yakala = asamalar[i].a.id === 'yakala';
+      bildirim.classList.toggle('acik', yakala && p > 0.12 && p < 0.7);
+      telefon.classList.toggle('acik', yakala && p > 0.16);
+      balonlar.forEach((b, j) => b.classList.toggle('acik', yakala && p > [0.2, 0.56, 0.78][j]));
+    };
+    if (AZ_HAREKET) { asamalar.forEach((x) => x.f(1)); goster(asamalar.length - 1, 1); return; }
+    asamalar.forEach((x) => x.f(0));
+    let gorunur = false; let i = 0; let bas = performance.now(); let duraklama = 0; let istek = 0;
+    const kare = (z) => {
+      istek = 0;
+      if (!gorunur || document.hidden) { duraklama = z; return; }
+      const sure = asamalar[i].a.sure || 4500;
+      let p = (z - bas) / sure;
+      if (p >= 1) { asamalar[i].f(1); i = (i + 1) % asamalar.length; bas = z; p = 0; asamalar[i].f(0); }
+      goster(i, kisit(p));
+      istek = requestAnimationFrame(kare);
+    };
+    const baslat = () => { if (!istek) { if (duraklama) { bas += performance.now() - duraklama; duraklama = 0; } istek = requestAnimationFrame(kare); } };
+    new IntersectionObserver(([g]) => { gorunur = g.isIntersecting; if (gorunur) baslat(); }, { threshold: 0.15 }).observe(kok);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden && gorunur) baslat(); });
+    // Adıma tıklayınca o aşama baştan oynar.
+    asamalar.forEach((x, j) => x.b.addEventListener('click', () => { asamalar[i].f(0); i = j; bas = performance.now(); x.f(0); }));
+    asamalar.forEach((x) => { x.b.tabIndex = 0; });
+    // Fare: pencere hafifçe eğilir.
+    if (INCE_ISARETCI) {
+      $('#kahraman').addEventListener('pointermove', (ev) => {
+        sahne.style.setProperty('--ry', `${(ev.clientX / innerWidth - 0.5) * 3}deg`);
+        sahne.style.setProperty('--rx', `${(0.5 - ev.clientY / innerHeight) * 4 + 6}deg`);
+      });
     }
   }
 
@@ -810,7 +902,7 @@
   etkilesimler();
   vitrinKur();
   tanitimKur();
-  nobetSahnesi();
+  demoKur();
   gecislerKur();
   surumuGoster();
 })();

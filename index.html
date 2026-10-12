@@ -44,25 +44,17 @@
     <section class="kahraman" id="kahraman" aria-labelledby="kahraman-baslik">
       <div class="izgara-zemin" aria-hidden="true"></div>
       <div class="imlec-isigi" aria-hidden="true"></div>
-      <h1 id="kahraman-baslik" class="kahraman-baslik" data-metin="kahraman.baslik">Testlerin Nöbetçisi</h1>
-      <div class="kahraman-eylem">
-        <button class="izle-hap izle-ac" type="button" data-manyetik>
-          <span class="izle-hap-ikon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span>
-          <span data-metin="kahraman.dugme">İzle</span>
-        </button>
+      <div class="kahraman-ust">
+        <span class="ust-etiket kahraman-etiket" data-metin="kahraman.etiket"></span>
+        <h1 id="kahraman-baslik" class="kahraman-baslik" data-metin="kahraman.baslik">Testlerin Nöbetçisi</h1>
       </div>
-      <!-- Nöbet sahnesi: kalkan, tarama halkaları, çevresinde ekranlar; tarama ışını sırayla uğrar, hata yakalanır ve düzelir. -->
-      <div class="nobet" id="nobet" aria-hidden="true">
-        <div class="nobet-derinlik" id="nobet-derinlik">
-          <svg class="nobet-isinlar" id="nobet-isinlar" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
-          <span class="nobet-halka" style="--h:1"></span><span class="nobet-halka" style="--h:2"></span><span class="nobet-halka" style="--h:3"></span>
-          <span class="nobet-tarama"></span>
-          <span class="nobet-dalga" id="nobet-dalga"></span>
-          <div class="nobet-merkez"><svg class="nobet-kalkan"><use href="#kalkan"/></svg></div>
-          <div class="nobet-ekranlar" id="nobet-ekranlar"></div>
+      <!-- Canlı demo: Nöbetçi penceresinde tüm iş akışı döngüde oynar (Tara → Öner → Koş → Yakala → Raporla). -->
+      <div class="demo" id="demo" aria-hidden="true">
+        <ol class="demo-adimlar" id="demo-adimlar"></ol>
+        <div class="demo-cerceve" id="demo-cerceve">
+          <div class="demo-sahne" id="demo-sahne"></div>
         </div>
       </div>
-      <a class="asagi" href="#vitrin" aria-label="Aşağı kaydır"><span></span></a>
     </section>
 
     <!-- ================= NELER YAPAR (üzerine gelince oynayan vitrin) ================= -->

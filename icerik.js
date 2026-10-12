@@ -26,11 +26,28 @@ window.ICERIK = {
   ],
 
   kahraman: {
+    etiket: 'Kod yazmadan test otomasyonu',
     baslik: 'Testlerin Nöbetçisi',
     dugme: 'İzle',
-    // Sahnedeki ekran kartları (6 tane; kısa adlar) ve durum etiketleri.
-    ekranlar: ['Müşteri kaydı', 'Sipariş', 'Ödeme', 'Ürün listesi', 'Kullanıcı profili', 'Sepet onayı'],
-    durum: { taraniyor: 'Taranıyor…', gecti: 'Geçti', hata: 'Hata bulundu', duzeldi: 'Düzeltildi' }
+    // Giriş demosu: Nöbetçi penceresinde döngüde oynayan beş aşama (ad ≤ 1 sözcük; yol = pencerenin üst satırı).
+    adimlar: [
+      { id: 'tara', ad: 'Tara', yol: 'Ekranlar / Müşteri kaydı / Nöbetçi taraması', sure: 4600 },
+      { id: 'oner', ad: 'Öner', yol: 'Senaryolar / Öneriler', sure: 4200 },
+      { id: 'kos', ad: 'Koş', yol: 'Koşu · Gece nöbeti · TEST', sure: 4600 },
+      { id: 'yakala', ad: 'Yakala', yol: 'Sonuçlar / Kart ile ödeme', sure: 5600 },
+      { id: 'rapor', ad: 'Raporla', yol: 'Pano · Genel', sure: 4600 }
+    ],
+    demo: {
+      alanlar: [['Ad soyad', 'metin'], ['E-posta', 'e-posta'], ['Telefon', 'telefon'], ['Şehir', 'seçim'], ['Doğum tarihi', 'tarih'], ['Sözleşme onayı', 'onay']],
+      bulunan: 'Bulunan alanlar', modelHazir: 'Ekran modeli hazır',
+      oneriBaslik: 'Nöbetçi 4 eksik durum buldu', senaryo: 'Senaryo', ekle: 'Ekle', eklendi: 'Eklendi',
+      oneriler: [['Sınır değer', 'Doğum tarihi: bugün'], ['Boş alan', 'E-posta boş bırakılırsa'], ['Geçersiz biçim', 'Telefon: 9 hane'], ['Kombinasyon', 'Şehir × sözleşme onayı']],
+      kosuAdi: 'Gece nöbeti · TEST', senaryolar: ['Yeni müşteri — Ankara', 'Kitap siparişi', 'Kampanyalı sepet', 'Kart ile ödeme', 'Profil güncelleme'], kalan: 3,
+      hataBaslik: 'Kart ile ödeme', kaldi: 'Kaldı', duzeldi: 'Geçti', hataNeden: 'Ödeme onayı 15 sn içinde görünmedi',
+      beklenen: 'Beklenen', gorulen: 'Görülen', tekrar: 'Tekrar koş', bildirim: '1 test kaldı · Kart ile ödeme',
+      telefon: ['❌ Kart ile ödeme kaldı', '↻ Tekrar koş', '✅ Kart ile ödeme geçti'],
+      basari: 'Başarı', trend: 'Son 14 gece', ekranlar: 'Ekranlar', servisler: 'Servisler', sabah: 'Günaydın · 60 / 60 geçti'
+    }
   },
 
   tanitim: { etiket: 'Kısa tanıtım', baslik: '2 dakikada Nöbetçi', alt: 'Gerçek ekranlar. Tıklayın, baştan sona izleyin.' },
