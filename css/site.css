@@ -1027,6 +1027,22 @@ p { margin: 0; }
 .intel-baglanti { color: var(--vurgu-2); font-weight: 600; white-space: nowrap; }
 .intel-baglanti:hover { color: #fff; }
 .indir-ilk { margin-top: 26px; text-align: center; color: var(--soluk); font-size: 14.5px; }
+.indir-ipucu { margin-top: 8px; text-align: center; color: var(--soluk); font-size: 14.5px; }
+.indir-ipucu a { color: var(--vurgu-2); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Sıkça Sorulanlar ---------- */
+.sss-bolumu { padding-top: 0; padding-bottom: clamp(70px, 10vw, 120px); max-width: 820px; }
+.sss-liste { display: grid; gap: 12px; }
+.sss-oge { padding: 0; transform: none !important; scroll-margin-top: 100px; }
+.sss-oge.acik { box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.45) inset; }
+.sss-soru { position: relative; width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 22px; border: 0; background: none; color: var(--metin); text-align: left; font: inherit; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; cursor: pointer; border-radius: inherit; }
+.sss-soru .ac-isareti { position: relative; right: auto; top: auto; flex: none; }
+.sss-soru:hover .ac-isareti { background: rgba(56, 189, 248, 0.12); }
+.sss-soru:focus-visible { outline: 2px solid var(--vurgu); outline-offset: -2px; }
+.sss-yanit { padding: 0 22px 20px; display: grid; gap: 8px; color: var(--soluk); font-size: 15.5px; line-height: 1.6; animation: belir 0.4s var(--yavas); }
+.sss-yanit[hidden] { display: none; }
+.sss-yanit code { display: block; width: fit-content; max-width: 100%; margin-top: 8px; font-family: var(--mono); font-size: 13px; line-height: 1.6; color: var(--vurgu-2); background: rgba(56, 189, 248, 0.08); padding: 8px 12px; border-radius: 8px; box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.2) inset; overflow-wrap: break-word; user-select: all; }
+@media (max-width: 600px) { .sss-soru { padding: 18px; font-size: 16px; } .sss-yanit { padding: 0 18px 18px; } }
 @media (max-width: 760px) { .indir-izgara { grid-template-columns: 1fr; } .indir-kart { padding: 22px; } }
 
 /* Yenilikler: yayımlanmamış ("Yakında") kayıt */

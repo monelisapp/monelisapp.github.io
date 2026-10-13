@@ -15,9 +15,11 @@
 
   // ------------------------------------------------------------------ metinler
   function metinleriYerlestir() {
+    // Sayılar elle yazılmaz: {ozet} / {tam} adım listelerinin uzunluğundan gelir.
+    const sayilar = { ozet: ICERIK.nasil?.adimlar?.length, tam: ICERIK.nasilSayfa?.adimlar?.length };
     for (const e of $$('[data-metin]')) {
       const d = yol(ICERIK, e.dataset.metin);
-      if (typeof d === 'string') e.textContent = d;
+      if (typeof d === 'string') e.textContent = d.replace(/\{(ozet|tam)\}/g, (_, k) => String(sayilar[k] ?? ''));
     }
     // Başlık sözcük sözcük belirir.
     const h1 = $('#kahraman-baslik');

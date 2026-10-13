@@ -11,8 +11,8 @@
 //  - tur: "İzle" tanıtım turu. Her adım bir ekran görüntüsünü ve o görüntüdeki bir hedefi gösterir. yazi ≤ 8 sözcük.
 window.ICERIK = {
   // Yedek sürüm bilgisi: GitHub'dan son sürüm okunamazsa gösterilir (son yayımlanan sürüm).
-  surum: 'v2.0',
-  tarih: '12 Ekim 2026',
+  surum: 'v2.1',
+  tarih: '13 Ekim 2026',
 
   marka: { ad: 'Nöbetçi', slogan: 'Testlerin Nöbetçisi' },
 
@@ -22,6 +22,7 @@ window.ICERIK = {
     { ad: 'Özellikler', adres: 'ozellikler.html', sayfa: 'ozellikler' },
     { ad: 'Güvenlik', adres: 'guvenlik.html', sayfa: 'guvenlik' },
     { ad: 'Yenilikler', adres: 'yenilikler.html', sayfa: 'yenilikler' },
+    { ad: 'SSS', adres: 'sss.html', sayfa: 'sss' },
     { ad: 'İletişim', adres: 'iletisim.html', sayfa: 'iletisim' },
     { ad: 'İndir', adres: 'indir.html', sayfa: 'indir' }
   ],
@@ -105,12 +106,13 @@ window.ICERIK = {
     sonuc: '✅ Kitap siparişi geçti\nTEST · 38 sn · 4 / 4 adım'
   },
 
-  kapanis: { baslik: "Nöbetçi'yi izleyin", alt: 'İki dakika. Kurulum yok, kayıt yok.', dugme: 'İzle' },
+  kapanis: { baslik: "Nöbetçi'yi izleyin", alt: 'İki dakika. Bilgisayarınızda çalışır, hesap gerekmez.', dugme: 'İzle' },
 
   // Ana sayfadaki kısa bölüm (Nasıl çalışır sayfasına bağlanır)
   nasil: {
     baslik: 'Nasıl çalışır',
-    alt: 'Beş adım. İlki bir dakika sürer.',
+    // {ozet} = bu listedeki adım sayısı, {tam} = Nasıl çalışır sayfasındaki adım sayısı (kendiliğinden yazılır).
+    alt: 'Özetle {ozet} adım; tamamı {tam} adım.',
     adimlar: [
       { ad: 'Ortam ekle', metin: 'Test edeceğiniz adresi yazın: TEST, HAZIRLIK…' },
       { ad: 'Girişi öğret', metin: 'Bir kez giriş yapın; Nöbetçi kaydeder, 2FA dahil.' },
@@ -125,6 +127,15 @@ window.ICERIK = {
     alt: 'Her sürümde neler değişti.',
     // EN YENİ EN ÜSTTE. yakinda: true → henüz yayımlanmadı ("Yakında" rozeti; yeni sürüm çıkınca maddeleri o sürüme taşıyın).
     liste: [
+      {
+        surum: 'v2.1', tarih: '13 Ekim 2026',
+        maddeler: [
+          'Web sitelerinde kelime arama testi özelliği',
+          'Telefon ve tablet görünümünde ekran testleri özelliği',
+          'Oracle veritabanı bağlantısında kolaylaştırma',
+          'Nöbetçi taramasında iyileştirmeler'
+        ]
+      },
       {
         surum: 'v2.0', tarih: '12 Ekim 2026',
         maddeler: [
@@ -269,6 +280,8 @@ window.ICERIK = {
     },
     digerleri: 'Diğer sistemler',
     kurulumNotu: 'Kurulum adımları indirilen dosyanın içinde.',
+    // Mac'te "açılamıyor" uyarısı için SSS bağlantısı (tek satır).
+    macIpucu: { metin: 'Mac “açılamıyor” derse:', baglanti: 'ne yapılır?', adres: 'sss.html#mac-acilamiyor' },
     ilkAcilis: 'İlk açılışta kasa parolanızı belirlersiniz; parola yalnız sizde kalır.'
   },
 
@@ -279,7 +292,7 @@ window.ICERIK = {
   nasilSayfa: {
     ust: 'Süreç',
     baslik: 'Kurulumdan sabah raporuna.',
-    alt: 'Dokuz adım. Görselin üzerine gelin, izleyin.',
+    alt: '{tam} adım. Görselin üzerine gelin, izleyin.',
     izle: 'Bu adımı izle',
     adimlar: [
       { ad: 'İlk açılış', baslik: 'Yedekten ya da sıfırdan.', satir: 'Yedeğinizi yükleyin ya da yeni proje başlatıp kasa parolanızı belirleyin.', tur: 0,
@@ -398,6 +411,38 @@ window.ICERIK = {
     eksik: 'Lütfen işaretli alanları doldurun.',
     yakinda: 'İletişim formu çok yakında açılacak.',
     gizlilik: 'Mesajınız e-posta olarak iletilir; site çerez ya da takip kullanmaz.'
+  },
+
+  // ------------------------------------------------------------------ Sıkça Sorulanlar (sss.html)
+  // Her soru tıklayınca açılır. id: bağlantı adresi (sss.html#<id>). Yanıt 1–3 kısa cümle; `ters tırnak` içi kod olarak gösterilir.
+  sssSayfa: {
+    ust: 'Yardım',
+    baslik: 'Sıkça Sorulanlar',
+    alt: 'Kısa sorular, kısa yanıtlar.',
+    sorular: [
+      { id: 'mac-acilamiyor', soru: 'Mac “Nöbetçi açılamıyor” ya da “geliştiricisi doğrulanamadı” diyor.',
+        yanit: [
+          'Paket henüz Apple imzalı değil; macOS bu yüzden uyarır.',
+          'Sistem Ayarları › Gizlilik ve Güvenlik’te “Yine de Aç”a basın. macOS 15 ve sonrasında yalnız sağ tık › Aç yetmeyebilir.',
+          'Olmazsa Terminal’de şunu çalıştırın: `xattr -dr com.apple.quarantine "/Applications/Nobetci.app"`'
+        ] },
+      { id: 'terminal', soru: 'Neden bir Terminal penceresi açılıyor?',
+        yanit: ['Nöbetçi’nin yerel sunucusu o pencerede çalışır. Pencere açık kaldıkça Nöbetçi çalışır; kapatınca Nöbetçi de kapanır.'] },
+      { id: 'planli', soru: 'Planlı (gece) koşular nasıl çalışır?',
+        yanit: [
+          'Bilgisayar açık ve uyanık, Nöbetçi de açık olmalı.',
+          'Ayarlar › İzinler’de “Arka plan çalışması” izni açık olmalı. Kasa kilitliyken de çalışır; bu seçenek varsayılan açıktır.'
+        ] },
+      { id: 'veriler', soru: 'Verilerim nerede?',
+        yanit: ['Yalnız bu bilgisayarda, şifreli kasada. İnternete gönderilmez.'] },
+      { id: 'windows', soru: 'Windows’ta çalışır mı?',
+        yanit: ['Şimdilik yalnız Mac paketi var. Windows paketi yakında; hazır olunca İndir sayfasında açılır.'] },
+      { id: 'guncelleme', soru: 'Güncelleme nasıl yapılır?',
+        yanit: [
+          'Eski uygulamayı silin, yenisini yerine koyun. Verileriniz uygulamanın dışında durduğu için kaybolmaz.',
+          'Yine de önce Ayarlar’dan yedek almanız önerilir.'
+        ] }
+    ]
   },
 
   yenilikSayfa: { ust: 'Sürüm notları', baslik: 'Yenilikler', alt: 'Her sürümde neler değişti.', yeni: 'yeni' },

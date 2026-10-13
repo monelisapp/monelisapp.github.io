@@ -454,6 +454,14 @@
     }
     const alt = $('.indir-ilk');
     if (alt && s.kurulumNotu) alt.textContent = `${s.kurulumNotu} ${s.ilkAcilis || ''}`.trim();
+    // Mac "açılamıyor" uyarısı için SSS'ye tek satırlık yönlendirme.
+    if (alt && s.macIpucu) {
+      const p = el('p', 'indir-ipucu gorun', `${s.macIpucu.metin} `);
+      const a = el('a', '', s.macIpucu.baglanti);
+      a.href = s.macIpucu.adres;
+      p.append(a);
+      alt.after(p);
+    }
     o.sonSurum().then((veri) => {
       if (!veri || !Object.keys(veri.varliklar).length) {
         durum.textContent = s.yakinda || 'İlk sürüm yakında';
@@ -552,6 +560,50 @@
     });
   }
 
+  // ------------------------------------------------------------------ Sıkça Sorulanlar
+  // Her soru bir düğme; tıklayınca yanıtı açılır/kapanır. Adresteki #<id> o soruyu açık getirir.
+  function sssSayfasi(o) {
+    const { ICERIK, el, $ } = o;
+    const liste = $('#sss-liste');
+    // `ters tırnak` içi kod olarak gösterilir (innerHTML yok).
+    const paragraf = (metin) => {
+      const p = el('p');
+      metin.split('`').forEach((parca, i) => { if (parca) p.append(i % 2 ? el('code', '', parca) : document.createTextNode(parca)); });
+      return p;
+    };
+    const ogeler = (ICERIK.sssSayfa?.sorular || []).map((s, i) => {
+      const kart = el('article', 'kart sss-oge gorun');
+      kart.id = s.id;
+      kart.style.transitionDelay = `${i * 0.05}s`;
+      const dugme = el('button', 'sss-soru');
+      dugme.type = 'button';
+      dugme.id = `${s.id}-soru`;
+      dugme.setAttribute('aria-controls', `${s.id}-yanit`);
+      dugme.append(el('span', '', s.soru), el('span', 'ac-isareti'));
+      dugme.lastChild.setAttribute('aria-hidden', 'true');
+      const yanit = el('div', 'sss-yanit');
+      yanit.id = `${s.id}-yanit`;
+      yanit.setAttribute('role', 'region');
+      yanit.setAttribute('aria-labelledby', dugme.id);
+      for (const m of s.yanit || []) yanit.append(paragraf(m));
+      const ac = (acik) => { kart.classList.toggle('acik', acik); dugme.setAttribute('aria-expanded', String(acik)); yanit.hidden = !acik; };
+      ac(false);
+      dugme.addEventListener('click', () => ac(yanit.hidden));
+      kart.append(dugme, yanit);
+      liste.append(kart);
+      return { id: s.id, kart, ac };
+    });
+    const adrestenAc = () => {
+      const x = ogeler.find((g) => `#${g.id}` === location.hash);
+      if (!x) return;
+      x.ac(true);
+      x.kart.classList.add('gorundu');
+      x.kart.scrollIntoView({ block: 'center' });
+    };
+    adrestenAc();
+    addEventListener('hashchange', adrestenAc);
+  }
+
   window.NobetciSayfa = function (o) {
     const sayfa = document.body.dataset.sayfa;
     if (sayfa === 'nasil') nasilSayfasi(o);
@@ -560,5 +612,6 @@
     else if (sayfa === 'yenilikler') yenilikSayfasi(o);
     else if (sayfa === 'indir') indirSayfasi(o);
     else if (sayfa === 'iletisim') iletisimSayfasi(o);
+    else if (sayfa === 'sss') sssSayfasi(o);
   };
 })();
