@@ -11,8 +11,8 @@
 //  - tur: "İzle" tanıtım turu. Her adım bir ekran görüntüsünü ve o görüntüdeki bir hedefi gösterir. yazi ≤ 8 sözcük.
 window.ICERIK = {
   // Yedek sürüm bilgisi: GitHub'dan son sürüm okunamazsa gösterilir (son yayımlanan sürüm).
-  surum: 'v2.1',
-  tarih: '13 Ekim 2026',
+  surum: 'v2.2',
+  tarih: '14 Ekim 2026',
 
   marka: { ad: 'Nöbetçi', slogan: 'Testlerin Nöbetçisi' },
 
@@ -127,6 +127,16 @@ window.ICERIK = {
     alt: 'Her sürümde neler değişti.',
     // EN YENİ EN ÜSTTE. yakinda: true → henüz yayımlanmadı ("Yakında" rozeti; yeni sürüm çıkınca maddeleri o sürüme taşıyın).
     liste: [
+      {
+        surum: 'v2.2', tarih: '14 Ekim 2026',
+        maddeler: [
+          'Windows paketi: Nöbetçi artık Windows 10/11’de de çalışır',
+          'Hata kalıpları: ekranda çıkan hata penceresini tek tıkla tanıtın; koşu yalnız tanıttığınız kalıplarla hata verir',
+          'Nöbetçi taraması: Web, Mobil ve Tablet birlikte; tarayıcı penceresinde izleme',
+          'Hatırlatıcılar ve Bildirimler sayfası (Nöbetçi zili, Telegram ve ses)',
+          'Koşu iyileştirmeleri'
+        ]
+      },
       {
         surum: 'v2.1', tarih: '13 Ekim 2026',
         maddeler: [
@@ -436,7 +446,7 @@ window.ICERIK = {
       { id: 'veriler', soru: 'Verilerim nerede?',
         yanit: ['Yalnız bu bilgisayarda, şifreli kasada. İnternete gönderilmez.'] },
       { id: 'windows', soru: 'Windows’ta çalışır mı?',
-        yanit: ['Şimdilik yalnız Mac paketi var. Windows paketi yakında; hazır olunca İndir sayfasında açılır.'] },
+        yanit: ['Evet. Windows 10/11 (64 bit) için paketi İndir sayfasından alın; açtığınız klasördeki Nöbetçi.exe ile başlatın.'] },
       { id: 'guncelleme', soru: 'Güncelleme nasıl yapılır?',
         yanit: [
           'Eski uygulamayı silin, yenisini yerine koyun. Verileriniz uygulamanın dışında durduğu için kaybolmaz.',
