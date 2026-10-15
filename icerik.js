@@ -1,9 +1,9 @@
-// NÖBETÇİ TANITIM SİTESİ — TÜM METİNLER BU DOSYADADIR.
+// MONELIS TANITIM SİTESİ — TÜM METİNLER BU DOSYADADIR.
 // Yeni sürümde yalnız bu dosya (ve gerekirse ekran görüntüleri) güncellenir; HTML / animasyon koduna dokunmak gerekmez.
 //  - surum / tarih: alt bilgideki sürüm işareti.
 //  - menu: üst menü (sayfa = <body data-sayfa="…"> değeri; etkin bağlantı buna göre işaretlenir).
 //  - yenilikler: "Yenilikler" sayfası ve ana sayfa bölümü (EN YENİ EN ÜSTTE; her kayıt: surum, tarih, 3–5 kısa madde).
-//  - vitrin: ana sayfadaki "Neler yapar" bölümü (üzerine gelince oynayan sahneler); faydalar: "Neden Nöbetçi" kutuları.
+//  - vitrin: ana sayfadaki "Neler yapar" bölümü (üzerine gelince oynayan sahneler); faydalar: "Neden Monelis" kutuları.
 //  - nasilSayfa: "Nasıl çalışır" sayfasının adımları. Her adım "kareler" ile gerçek ekran görüntüsünde sırayla yakınlaşır
 //    (ekran = assets/ekranlar/<ad>.webp, hedef = konumlar.js'teki ad ya da bolge: [x, y, g, y] 0–1); telefon: true ise
 //    Telegram telefonu; tur: "Bu adımı izle" düğmesinin açtığı tur bölümünün sırası (0'dan).
@@ -11,10 +11,10 @@
 //  - tur: "İzle" tanıtım turu. Her adım bir ekran görüntüsünü ve o görüntüdeki bir hedefi gösterir. yazi ≤ 8 sözcük.
 window.ICERIK = {
   // Yedek sürüm bilgisi: GitHub'dan son sürüm okunamazsa gösterilir (son yayımlanan sürüm).
-  surum: 'v2.2',
-  tarih: '14 Ekim 2026',
+  surum: 'v3.0',
+  tarih: '15 Ekim 2026',
 
-  marka: { ad: 'Nöbetçi', slogan: 'Testlerin Nöbetçisi' },
+  marka: { ad: 'Monelis' },
 
   menu: [
     { ad: 'Ana sayfa', adres: 'index.html', sayfa: 'ana' },
@@ -29,11 +29,11 @@ window.ICERIK = {
 
   kahraman: {
     etiket: 'Kod yazmadan test otomasyonu',
-    baslik: 'Testlerin Nöbetçisi',
+    baslik: 'Monelis',
     dugme: 'İzle',
-    // Giriş demosu: Nöbetçi penceresinde döngüde oynayan beş aşama (ad ≤ 1 sözcük; yol = pencerenin üst satırı).
+    // Giriş demosu: Monelis penceresinde döngüde oynayan beş aşama (ad ≤ 1 sözcük; yol = pencerenin üst satırı).
     adimlar: [
-      { id: 'tara', ad: 'Tara', yol: 'Ekranlar / Müşteri kaydı / Nöbetçi taraması', sure: 4600 },
+      { id: 'tara', ad: 'Tara', yol: 'Ekranlar / Müşteri kaydı / Akıllı tarama', sure: 4600 },
       { id: 'oner', ad: 'Öner', yol: 'Senaryolar / Öneriler', sure: 4200 },
       { id: 'kos', ad: 'Koş', yol: 'Koşu · Gece nöbeti · TEST', sure: 4600 },
       { id: 'yakala', ad: 'Yakala', yol: 'Sonuçlar / Kart ile ödeme', sure: 5600 },
@@ -42,7 +42,7 @@ window.ICERIK = {
     demo: {
       alanlar: [['Ad soyad', 'metin'], ['E-posta', 'e-posta'], ['Telefon', 'telefon'], ['Şehir', 'seçim'], ['Doğum tarihi', 'tarih'], ['Sözleşme onayı', 'onay']],
       bulunan: 'Bulunan alanlar', modelHazir: 'Ekran modeli hazır',
-      oneriBaslik: 'Nöbetçi 4 eksik durum buldu', senaryo: 'Senaryo', ekle: 'Ekle', eklendi: 'Eklendi',
+      oneriBaslik: 'Monelis 4 eksik durum buldu', senaryo: 'Senaryo', ekle: 'Ekle', eklendi: 'Eklendi',
       oneriler: [['Sınır değer', 'Doğum tarihi: bugün'], ['Boş alan', 'E-posta boş bırakılırsa'], ['Geçersiz biçim', 'Telefon: 9 hane'], ['Kombinasyon', 'Şehir × sözleşme onayı']],
       kosuAdi: 'Gece nöbeti · TEST', senaryolar: ['Yeni müşteri — Ankara', 'Kitap siparişi', 'Kampanyalı sepet', 'Kart ile ödeme', 'Profil güncelleme'], kalan: 3,
       hataBaslik: 'Kart ile ödeme', kaldi: 'Kaldı', duzeldi: 'Geçti', hataNeden: 'Ödeme onayı 15 sn içinde görünmedi',
@@ -52,7 +52,7 @@ window.ICERIK = {
     }
   },
 
-  tanitim: { etiket: 'Kısa tanıtım', baslik: '2 dakikada Nöbetçi', alt: 'Gerçek ekranlar. Tıklayın, baştan sona izleyin.' },
+  tanitim: { etiket: 'Kısa tanıtım', baslik: '2 dakikada Monelis', alt: 'Gerçek ekranlar. Tıklayın, baştan sona izleyin.' },
 
   // Ana sayfa "Neler yapar" vitrini: soldaki başlığın ya da sahnenin üzerine gelince animasyon oynar (dokunmatikte dokununca).
   // id sırası serbesttir; her id'nin görseli index.html'de (.vitrin-panel[data-sahne]) ya da js/site.js'te (YENI_SAHNE) kuruludur.
@@ -75,7 +75,7 @@ window.ICERIK = {
         baslik: 'Özet panosu', basari: 'Başarı', bugun: 'Bugün', trend: 'Son 14 gece', servis: 'Servisler',
         sql: 'Bekleyen sipariş', esik: 'Eşik aşıldı', bildirim: 'Bekleyen sipariş 25’i geçti' },
       { id: 'ekip', ikon: 'ekip', ad: 'Ekiple paylaşın', satir: 'Bir kez yayınlayın, herkes tek tıkla günceller.', sure: 3800,
-        siz: 'Sizin Nöbetçi’niz', yayinla: 'Yayınla', guncelle: 'Güncelle', guncel: 'Güncel',
+        siz: 'Sizin Monelis’iniz', yayinla: 'Yayınla', guncelle: 'Güncelle', guncel: 'Güncel',
         kisiler: ['Deniz', 'Ece', 'Mert'] },
       { id: 'gece', ikon: 'saat', ad: 'Siz uyurken koşar', satir: 'Sabah özet hazır, sorun cebinizde.', sure: 4200,
         sabah: { baslik: 'Günaydın', satir: '58 / 60 test geçti', dikkat: '1 ekran dikkat istiyor' } },
@@ -83,9 +83,9 @@ window.ICERIK = {
     ]
   },
 
-  // "Neden Nöbetçi": dört kısa fayda (buyuk ≤ 3 sözcük, satir ≤ 6 sözcük).
+  // "Neden Monelis": dört kısa fayda (buyuk ≤ 3 sözcük, satir ≤ 6 sözcük).
   faydalar: {
-    baslik: 'Neden Nöbetçi?',
+    baslik: 'Neden Monelis?',
     liste: [
       { ikon: 'hedef', buyuk: 'Hata payı en aza', satir: 'Her ekran, her koşuda kontrol.' },
       { ikon: 'kod', buyuk: '0 satır kod', satir: 'Formu doldurun, test hazır.' },
@@ -96,7 +96,7 @@ window.ICERIK = {
 
   // Telegram sohbeti (Nasıl çalışır, Özellikler ve turun Telegram bölümü)
   telegram: {
-    botAdi: 'Nöbetçi',
+    botAdi: 'Monelis',
     botDurum: 'bot',
     komut: '/senaryolar',
     liste: 'Hangi senaryo koşsun?',
@@ -106,7 +106,7 @@ window.ICERIK = {
     sonuc: '✅ Kitap siparişi geçti\nTEST · 38 sn · 4 / 4 adım'
   },
 
-  kapanis: { baslik: "Nöbetçi'yi izleyin", alt: 'İki dakika. Bilgisayarınızda çalışır, hesap gerekmez.', dugme: 'İzle' },
+  kapanis: { baslik: "Monelis'i izleyin", alt: 'İki dakika. Bilgisayarınızda çalışır, hesap gerekmez.', dugme: 'İzle' },
 
   // Ana sayfadaki kısa bölüm (Nasıl çalışır sayfasına bağlanır)
   nasil: {
@@ -115,7 +115,7 @@ window.ICERIK = {
     alt: 'Özetle {ozet} adım; tamamı {tam} adım.',
     adimlar: [
       { ad: 'Ortam ekle', metin: 'Test edeceğiniz adresi yazın: TEST, HAZIRLIK…' },
-      { ad: 'Girişi öğret', metin: 'Bir kez giriş yapın; Nöbetçi kaydeder, 2FA dahil.' },
+      { ad: 'Girişi öğret', metin: 'Bir kez giriş yapın; Monelis kaydeder, 2FA dahil.' },
       { ad: 'Ekranı tara', metin: 'Alanları, adımları ve seçenekleri kendisi bulur.' },
       { ad: 'Senaryo yaz', metin: 'Değerleri formdan girin. Kod yok.' },
       { ad: 'Koş ve izle', metin: 'Şimdi, gece ya da telefondan. Sonuç panoda.' }
@@ -128,12 +128,22 @@ window.ICERIK = {
     // EN YENİ EN ÜSTTE. yakinda: true → henüz yayımlanmadı ("Yakında" rozeti; yeni sürüm çıkınca maddeleri o sürüme taşıyın).
     liste: [
       {
+        surum: 'v3.0', tarih: '15 Ekim 2026',
+        maddeler: [
+          'Yeni ad: Nöbetçi artık Monelis; yeni logo ve simgeler. Verileriniz ve kasanız olduğu gibi açılır',
+          'Bugün: uygulama Özet ile açılır; ilgilenmeniz gereken konular nedeni ve önerilen adımla en üstte',
+          'Bildirimler: atlanan ya da kaçan planlı koşu, yeni kritik sorun ve isteğe bağlı günlük özet; zilde ve isterseniz Telegram’da',
+          'Ekran değişikliği: planlı koşu ekranları yalnızca okuyarak değişen alanları bulur ve Değişiklikler’e yazar (isteğe bağlı)',
+          'Güvenlik: izinler bilgisayara özel, yedekten gelenler öneri olarak gelir; dışarı giden iletilerde gizli bilgiler maskelenir'
+        ]
+      },
+      {
         surum: 'v2.2', tarih: '14 Ekim 2026',
         maddeler: [
-          'Windows paketi: Nöbetçi artık Windows 10/11’de de çalışır',
+          'Windows paketi: Monelis (eski adıyla Nöbetçi) artık Windows 10/11’de de çalışır',
           'Hata kalıpları: ekranda çıkan hata penceresini tek tıkla tanıtın; koşu yalnız tanıttığınız kalıplarla hata verir',
-          'Nöbetçi taraması: Web, Mobil ve Tablet birlikte; tarayıcı penceresinde izleme',
-          'Hatırlatıcılar ve Bildirimler sayfası (Nöbetçi zili, Telegram ve ses)',
+          'Akıllı tarama (eski adıyla Nöbetçi taraması): Web, Mobil ve Tablet birlikte; tarayıcı penceresinde izleme',
+          'Hatırlatıcılar ve Bildirimler sayfası (uygulama içi zil, Telegram ve ses)',
           'Koşu iyileştirmeleri'
         ]
       },
@@ -143,7 +153,7 @@ window.ICERIK = {
           'Web sitelerinde kelime arama testi özelliği',
           'Telefon ve tablet görünümünde ekran testleri özelliği',
           'Oracle veritabanı bağlantısında kolaylaştırma',
-          'Nöbetçi taramasında iyileştirmeler'
+          'Akıllı taramada (eski adıyla Nöbetçi taraması) iyileştirmeler'
         ]
       },
       {
@@ -161,7 +171,7 @@ window.ICERIK = {
         maddeler: [
           'Ekip paylaşımı: ortak klasörden sürümlü yayın, "Güncelle" ve eski sürüme dönüş',
           'Ekip listesi ve roller (Admin / Kullanıcı)',
-          '"Hızlı test" artık "Nöbetçi taraması"; değişiklikler test verisi tablosuna da işlenebilir',
+          '"Hızlı test" artık "Akıllı tarama" (eski adıyla Nöbetçi taraması); değişiklikler test verisi tablosuna da işlenebilir',
           'Ayarlar sadeleşti: her bölüm tek, açılıp kapanan kutu'
         ]
       },
@@ -209,7 +219,7 @@ window.ICERIK = {
       {
         surum: 'v1.5', tarih: '1 Ekim 2026',
         maddeler: [
-          'Hızlı test: adresi verin, Nöbetçi ekranı keşfedip kaydetsin',
+          'Hızlı test: adresi verin, Monelis (eski adıyla Nöbetçi) ekranı keşfedip kaydetsin',
           'Doldur: boş alanlar yalnız test verisinden, siz seçersiniz',
           'Maskeli alanlara gerçekçi yazım; bekleme süreleri kısaldı',
           'Basit mod (deneysel): sade Testlerim · Sonuçlar · Ayarlar görünümü'
@@ -272,9 +282,9 @@ window.ICERIK = {
 
   // ------------------------------------------------------------------ İndir (sürüm ve dosyalar GitHub'dan canlı okunur)
   indir: {
-    depo: 'nobetciapp/indir',
+    depo: 'monelisapp/indir',
     ust: 'İndir',
-    baslik: 'Nöbetçi’yi indirin.',
+    baslik: 'Monelis’i indirin.',
     alt: 'Ücretsiz. Kendi bilgisayarınızda çalışır.',
     yakinda: 'İlk sürüm yakında',
     sonSurum: 'Son sürüm',
@@ -282,9 +292,9 @@ window.ICERIK = {
     sistemler: { windows: 'Windows', mac: 'Mac' },
     buBilgisayar: 'Bu bilgisayar',
     dosyalar: {
-      windows: { ad: 'Nobetci-windows.zip', dugme: 'Windows için indir', not: 'Windows 10/11 · 64 bit' },
-      macArm: { ad: 'Nobetci-mac-arm64.tar.gz', dugme: 'M serisi Mac için indir', not: 'M1, M2, M3, M4 · macOS 14+' },
-      macIntel: { ad: 'Nobetci-mac-x64.tar.gz', dugme: 'Intel Mac için indir', not: 'Intel işlemcili · macOS 14+', baglanti: 'Intel Mac için indir' },
+      windows: { ad: 'Monelis-windows.zip', dugme: 'Windows için indir', not: 'Windows 10/11 · 64 bit' },
+      macArm: { ad: 'Monelis-mac-arm64.tar.gz', dugme: 'M serisi Mac için indir', not: 'M1, M2, M3, M4 · macOS 14+' },
+      macIntel: { ad: 'Monelis-mac-x64.tar.gz', dugme: 'Intel Mac için indir', not: 'Intel işlemcili · macOS 14+', baglanti: 'Intel Mac için indir' },
       // Mac kartında hangisinin seçileceğini anlatan tek satır.
       macHangisi: 'Hangisi sizinki? Elma menüsü › Bu Mac Hakkında: "Yonga: Apple M…" yazıyorsa üstteki, "İşlemci: Intel" yazıyorsa alttaki.'
     },
@@ -309,10 +319,10 @@ window.ICERIK = {
         kareler: [{ ekran: 'ilk-acilis', hedef: 'secenekler', not: 'Yedek yükle · Yeni proje' }, { ekran: 'ilk-kasa', hedef: 'form', not: 'Kasa parolası' }] },
       { ad: 'Ortam ekle', baslik: 'Önce adres.', satir: 'TEST, HAZIRLIK, CANLI: test edeceğiniz ortamı sihirbazla ekleyin.', tur: 1,
         kareler: [{ ekran: 'ortamlar', hedef: 'ortamEkle', not: 'Ortam ekle' }, { ekran: 'ortam-sihirbazi', hedef: 'adres', not: 'Adres ve tür' }] },
-      { ad: 'Girişi öğret', baslik: 'Girişi bir kez gösterin.', satir: 'Siz giriş yaparsınız; Nöbetçi adımları kaydeder. 2FA dahil.', tur: 2,
+      { ad: 'Girişi öğret', baslik: 'Girişi bir kez gösterin.', satir: 'Siz giriş yaparsınız; Monelis adımları kaydeder. 2FA dahil.', tur: 2,
         kareler: [{ ekran: 'ortamlar', hedef: 'girisiOgret', not: 'Girişi öğret' }, { ekran: 'giris-ogret', hedef: 'ogret', not: 'Tek tık, kayıt başlar' }] },
-      { ad: 'Ekranı tara', baslik: 'Nöbetçi ekranı tanır.', satir: 'Alanları, adımları, seçenekleri bulur; ekran değişince fark eder.', tur: 3,
-        kareler: [{ ekran: 'ekran-ekle', hedef: 'tarama', not: 'Nöbetçi taraması' }, { ekran: 'degisiklikler', hedef: 'yeniAlan', not: 'Yeni alan bulundu' }] },
+      { ad: 'Ekranı tara', baslik: 'Monelis ekranı tanır.', satir: 'Alanları, adımları, seçenekleri bulur; ekran değişince fark eder.', tur: 3,
+        kareler: [{ ekran: 'ekran-ekle', hedef: 'tarama', not: 'Akıllı tarama' }, { ekran: 'degisiklikler', hedef: 'yeniAlan', not: 'Yeni alan bulundu' }] },
       { ad: 'Senaryo', baslik: 'Form doldurun, kod yazmayın.', satir: 'Değerleri girin; hazırlık kontrolü eksikleri anında söyler.', tur: 4,
         kareler: [{ ekran: 'senaryo', hedef: 'baslik', not: 'Değerler' }, { ekran: 'senaryo', hedef: 'hazirlik', not: 'Hazırlık kontrolü' }] },
       { ad: 'Koş', baslik: 'Canlı izleyin.', satir: 'Her senaryo sırayla koşar; dışarıdan başlayan koşular da ekranda görünür.', tur: 5,
@@ -387,15 +397,15 @@ window.ICERIK = {
     bloklar: [
       { id: 'kasa', baslik: 'Şifreli kasa.', satir: 'Parolalar, 2FA anahtarları, ortam adresleri ve sonuçlar AES-256 ile şifrelenir.',
         ogeler: ['Parolalar', '2FA anahtarları', 'Ortam adresleri', 'Senaryolar', 'Sonuçlar'] },
-      { id: 'yerel', baslik: 'Bulut yok.', satir: 'Nöbetçi sizin bilgisayarınızda çalışır; yalnız test ettiğiniz uygulamaya bağlanır.',
+      { id: 'yerel', baslik: 'Bulut yok.', satir: 'Monelis sizin bilgisayarınızda çalışır; yalnız test ettiğiniz uygulamaya bağlanır.',
         etiketler: { bilgisayar: 'Sizin bilgisayarınız', uygulama: 'Test ettiğiniz uygulama', bulut: 'Bulut' } },
-      { id: 'izinler', baslik: 'İzinler kapalı başlar.', satir: 'Nöbetçi sizin adınıza bir şey yapmadan önce izin ister.',
+      { id: 'izinler', baslik: 'İzinler kapalı başlar.', satir: 'Monelis sizin adınıza bir şey yapmadan önce izin ister.',
         izinler: ['Web uygulamasına erişim', 'Servis istekleri', 'Telegram’dan komut', 'Arka plan çalışması', 'Dış gönderim'], izinVer: 'İzin ver' },
       { id: 'canli', baslik: 'Canlı ortamda iki kez sorar.', satir: 'Canlı ortamdaki her koşu ayrıca, açık bir onay ister.',
         pencere: { baslik: 'CANLI ortamda çalıştırılsın mı?', kutu: 'Canlı ortamda çalıştırmaya izin veriyorum', dugme: 'Başlat' } },
       { id: 'maske', baslik: 'Kişisel veri görünmez.', satir: 'Rapor, ekran ve bildirimlerde kişisel veriler maskelenir.',
         ornek: [['E-posta', 'deniz.yilmaz@ornek.test', 'd••••••••••@ornek.test'], ['Telefon', '0555 123 45 67', '0555 ••• •• 67'], ['Kart', '4111 1111 1111 1111', '4111 •••• •••• 1111']] },
-      { id: 'yedek', baslik: 'Yedek de şifreli.', satir: 'Tek .tayedek dosyası; yalnız kasa parolasıyla açılır.', dosya: 'nobetci-2026-10-12.tayedek' },
+      { id: 'yedek', baslik: 'Yedek de şifreli.', satir: 'Tek .tayedek dosyası; yalnız kasa parolasıyla açılır.', dosya: 'monelis-2026-10-12.tayedek' },
       { id: 'ekip', baslik: 'Ekip ve roller.', satir: 'Kimin açabileceğini siz seçersiniz; liste de kasada şifreli.',
         kisiler: [['Deniz', 'Admin'], ['Ece', 'Kullanıcı'], ['Mert', 'Kullanıcı']] }
     ]
@@ -430,23 +440,25 @@ window.ICERIK = {
     baslik: 'Sıkça Sorulanlar',
     alt: 'Kısa sorular, kısa yanıtlar.',
     sorular: [
-      { id: 'mac-acilamiyor', soru: 'Mac “Nöbetçi açılamıyor” ya da “geliştiricisi doğrulanamadı” diyor.',
+      { id: 'yeni-ad', soru: 'Nöbetçi’nin adı mı değişti?',
+        yanit: ['Evet, Nöbetçi’nin yeni adı Monelis. Aynı uygulama; güncellemeyi her zamanki gibi yapın, verileriniz bilgisayarınızda yerinde kalır.'] },
+      { id: 'mac-acilamiyor', soru: 'Mac “Monelis açılamıyor” ya da “geliştiricisi doğrulanamadı” diyor.',
         yanit: [
           'Paket henüz Apple imzalı değil; macOS bu yüzden uyarır.',
           'Sistem Ayarları › Gizlilik ve Güvenlik’te “Yine de Aç”a basın. macOS 15 ve sonrasında yalnız sağ tık › Aç yetmeyebilir.',
-          'Olmazsa Terminal’de şunu çalıştırın: `xattr -dr com.apple.quarantine "/Applications/Nobetci.app"`'
+          'Olmazsa Terminal’de şunu çalıştırın: `xattr -dr com.apple.quarantine "/Applications/Monelis.app"`'
         ] },
       { id: 'terminal', soru: 'Neden bir Terminal penceresi açılıyor?',
-        yanit: ['Nöbetçi’nin yerel sunucusu o pencerede çalışır. Pencere açık kaldıkça Nöbetçi çalışır; kapatınca Nöbetçi de kapanır.'] },
+        yanit: ['Monelis’in yerel sunucusu o pencerede çalışır. Pencere açık kaldıkça Monelis çalışır; kapatınca Monelis de kapanır.'] },
       { id: 'planli', soru: 'Planlı (gece) koşular nasıl çalışır?',
         yanit: [
-          'Bilgisayar açık ve uyanık, Nöbetçi de açık olmalı.',
+          'Bilgisayar açık ve uyanık, Monelis de açık olmalı.',
           'Ayarlar › İzinler’de “Arka plan çalışması” izni açık olmalı. Kasa kilitliyken de çalışır; bu seçenek varsayılan açıktır.'
         ] },
       { id: 'veriler', soru: 'Verilerim nerede?',
         yanit: ['Yalnız bu bilgisayarda, şifreli kasada. İnternete gönderilmez.'] },
       { id: 'windows', soru: 'Windows’ta çalışır mı?',
-        yanit: ['Evet. Windows 10/11 (64 bit) için paketi İndir sayfasından alın; açtığınız klasördeki Nöbetçi.exe ile başlatın.'] },
+        yanit: ['Evet. Windows 10/11 (64 bit) için paketi İndir sayfasından alın; açtığınız klasördeki Monelis.exe ile başlatın.'] },
       { id: 'guncelleme', soru: 'Güncelleme nasıl yapılır?',
         yanit: [
           'Eski uygulamayı silin, yenisini yerine koyun. Verileriniz uygulamanın dışında durduğu için kaybolmaz.',
@@ -458,7 +470,7 @@ window.ICERIK = {
   yenilikSayfa: { ust: 'Sürüm notları', baslik: 'Yenilikler', alt: 'Her sürümde neler değişti.', yeni: 'yeni' },
 
   tur: {
-    baslik: 'Nöbetçi turu',
+    baslik: 'Monelis turu',
     // Ana sayfadaki kısa döngü: [bölüm sırası, adım sırası]
     tanitim: [[2, 0], [3, 1], [5, 2], [6, 1]],
     bolumler: [
@@ -474,10 +486,10 @@ window.ICERIK = {
       ] },
       { ad: 'Girişi öğret', adimlar: [
         { ekran: 'ortamlar', hedef: 'girisiOgret', tik: true, yazi: 'Burası: girişi bir kez öğretirsiniz' },
-        { ekran: 'giris-ogret', hedef: 'ogret', tik: true, yazi: 'Siz girin, Nöbetçi kaydeder' }
+        { ekran: 'giris-ogret', hedef: 'ogret', tik: true, yazi: 'Siz girin, Monelis kaydeder' }
       ] },
       { ad: 'Ekranı tara', adimlar: [
-        { ekran: 'ekran-ekle', hedef: 'tarama', yazi: 'Adresi verin, gerisini Nöbetçi yapar' },
+        { ekran: 'ekran-ekle', hedef: 'tarama', yazi: 'Adresi verin, gerisini Monelis yapar' },
         { ekran: 'degisiklikler', hedef: 'yeniAlan', yazi: 'Ekran değişti: yeni alan bulundu' },
         { ekran: 'degisiklikler', hedef: 'hepsiniKabul', tik: true, yazi: 'Tek tıkla modele işleyin' }
       ] },
@@ -523,7 +535,7 @@ window.ICERIK = {
   },
 
   altbilgi: {
-    not: 'Nöbetçi kendi bilgisayarınızda çalışır. Sürüm bilgisi için GitHub’a tek bir istek yapılır; çerez yok, takip yok.',
+    not: 'Monelis kendi bilgisayarınızda çalışır. Sürüm bilgisi için GitHub’a tek bir istek yapılır; çerez yok, takip yok.',
     izle: 'Turu izle'
   }
 };

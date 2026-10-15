@@ -1,4 +1,4 @@
-// NÖBETÇİ TANITIM SİTESİ — metinleri icerik.js'ten yerleştirir; kahraman döngüsü, üzerine gelince oynayan vitrin ve küçük etkileşimler.
+// MONELIS TANITIM SİTESİ — metinleri icerik.js'ten yerleştirir; kahraman döngüsü, üzerine gelince oynayan vitrin ve küçük etkileşimler.
 (function () {
   'use strict';
 
@@ -42,12 +42,12 @@
     const ust = $('#ust');
     if (ust && !ust.children.length) {
       ust.innerHTML = `<div class="ust-ic">
-        <a class="marka" href="index.html" aria-label="Nöbetçi ana sayfa"><svg class="marka-logo" aria-hidden="true"><use href="#kalkan"/></svg><span></span></a>
+        <a class="marka" href="index.html" aria-label="Monelis ana sayfa"><svg class="marka-logo" aria-hidden="true"><use href="#kalkan"/></svg><span></span></a>
         <nav class="ana-menu" id="ana-menu" aria-label="Ana menü"><ul class="menu"></ul></nav>
         <button class="dugme dugme-kucuk izle-ac" type="button" data-manyetik><span>İzle</span> <span class="oynat-ikon" aria-hidden="true">▶</span></button>
         <button class="menu-dugme" type="button" aria-expanded="false" aria-controls="ana-menu" aria-label="Menüyü aç"><span></span><span></span></button>
       </div>`;
-      $('.marka span', ust).textContent = ICERIK.marka?.ad || 'Nöbetçi';
+      $('.marka span', ust).textContent = ICERIK.marka?.ad || 'Monelis';
       const ul = $('.menu', ust);
       for (const m of ICERIK.menu || []) {
         const li = el('li');
@@ -76,7 +76,7 @@
         <p class="alt-not"></p>
         <a class="surum-isareti" href="yenilikler.html"></a>
       </div>`;
-      $('.marka span', alt).textContent = ICERIK.marka?.ad || 'Nöbetçi';
+      $('.marka span', alt).textContent = ICERIK.marka?.ad || 'Monelis';
       for (const m of ICERIK.menu || []) { const li = el('li'); const a = el('a', '', m.ad); a.href = m.adres; li.append(a); $('ul', alt).append(li); }
       $('.alt-not', alt).textContent = ICERIK.altbilgi?.not || '';
       $('.surum-isareti', alt).textContent = `Sürüm ${ICERIK.surum} · ${ICERIK.tarih}`;
@@ -320,7 +320,7 @@
     sahne.innerHTML = `<div class="demo-pencere"><div class="dp-ust"><i></i><i></i><i></i><span class="dp-adres">demo-portal · TEST</span><span class="dp-canli"><b></b>canlı</span></div>
       <div class="dp-govde"><nav class="dp-yan"></nav><div class="dp-ana"><div class="dp-yol"></div><div class="dp-ekranlar"></div></div></div>
       <div class="dp-bildirim"><span class="dp-bildirim-ikon">${ikon('zil')}</span><span></span></div></div>
-      <div class="demo-telefon"><div class="dt-cerceve"><div class="dt-ekran"><div class="dt-ust"><svg aria-hidden="true"><use href="#kalkan"/></svg><b>Nöbetçi</b><small>bot</small></div><div class="dt-akis"></div></div></div></div>`;
+      <div class="demo-telefon"><div class="dt-cerceve"><div class="dt-ekran"><div class="dt-ust"><svg aria-hidden="true"><use href="#kalkan"/></svg><b>Monelis</b><small>bot</small></div><div class="dt-akis"></div></div></div></div>`;
     $('.dp-bildirim span:last-child', sahne).textContent = d.bildirim || '';
     const MENU = [['ekran', 'Ekranlar', 'tara'], ['oneri', 'Senaryolar', 'oner'], ['saat', 'Koşular', 'kos'], ['zil', 'Sonuçlar', 'yakala'], ['pano', 'Pano', 'rapor']];
     const menu = MENU.map(([ik, ad, id]) => { const a = el('span', 'dp-menu'); a.innerHTML = ikon(ik); a.append(el('span', '', ad)); a.dataset.id = id; $('.dp-yan', sahne).append(a); return a; });
@@ -708,7 +708,7 @@
       const d = e.target.closest('.izle-ac');
       if (!d) return;
       e.preventDefault();
-      window.NobetciTur.oynaticiAc(d, d.dataset.bolum != null ? Number(d.dataset.bolum) : null);
+      window.MonelisTur.oynaticiAc(d, d.dataset.bolum != null ? Number(d.dataset.bolum) : null);
     });
     // görünme
     const io = new IntersectionObserver((girdiler) => {
@@ -778,9 +778,9 @@
   function tanitimKur() {
     const kap = $('#tanitim-sahne'); const cerceve = $('#tanitim-cerceve');
     if (!kap) return;
-    cerceve.addEventListener('click', () => window.NobetciTur.oynaticiAc(cerceve));
+    cerceve.addEventListener('click', () => window.MonelisTur.oynaticiAc(cerceve));
     let tur = null;
-    const kur = () => { if (!tur) { tur = new window.NobetciTur.Tur(kap, { kisa: true, secim: ICERIK.tur?.tanitim }); tur.git(2.6); } return tur; };
+    const kur = () => { if (!tur) { tur = new window.MonelisTur.Tur(kap, { kisa: true, secim: ICERIK.tur?.tanitim }); tur.git(2.6); } return tur; };
     new IntersectionObserver(([g], gz) => { if (g.isIntersecting) { kur(); gz.disconnect(); } }, { rootMargin: '200px 0px', threshold: 0.01 }).observe(kap);
     if (AZ_HAREKET) return;
     // Ekranda (en az yarısı) görünürken oynar; kaydırıp ekrandan çıkınca durur, geri gelince kaldığı yerden sürer.
@@ -791,7 +791,7 @@
   // Tek istek: depo sürüm listesi (yayımlanmış sürüm yoksa 404 değil boş liste döner; konsolda hata çıkmaz). Sonuç bu
   // sekmede 1 saat saklanır (sessionStorage). Ağ yok / sınır aşıldı / sürüm yok → null: icerik.js'teki sürüm yazısı kalır,
   // indirme düğmeleri gizli ("İlk sürüm yakında"). Kişisel veri gönderilmez.
-  const SURUM_ANAHTARI = 'nobetci.sonSurum.v1';
+  const SURUM_ANAHTARI = 'monelis.sonSurum.v1';
   const SURUM_OMRU = 60 * 60 * 1000;
   let surumSozu = null;
   function sonSurum() {
@@ -889,18 +889,18 @@
         a.append(ik, el('span', '', ICERIK.indir?.ust || 'İndir'));
         eylem.append(a);
       }
-      window.dispatchEvent(new CustomEvent('nobetci-surum', { detail: veri }));
+      window.dispatchEvent(new CustomEvent('monelis-surum', { detail: veri }));
     });
   }
 
   // ------------------------------------------------------------------ başlat
   // Sayfaya özgü kod (js/sayfalar.js) bu ortak yardımcıları kullanır.
   const ortak = { ICERIK, AZ_HAREKET, INCE_ISARETCI, $, $$, el, kisit, harita, ikon, oynatici, uzerindeOynat, izleDugmesi, surumKarti, surumKimligi, dalgaEkle, sonSurum, indirKutusu, isletimSistemi };
-  window.NobetciOrtak = ortak;
+  window.MonelisOrtak = ortak;
   kabukKur();
   metinleriYerlestir();
   detaylariYerlestir();
-  if (typeof window.NobetciSayfa === 'function') window.NobetciSayfa(ortak);
+  if (typeof window.MonelisSayfa === 'function') window.MonelisSayfa(ortak);
   etkilesimler();
   vitrinKur();
   tanitimKur();

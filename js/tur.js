@@ -1,4 +1,4 @@
-// NÖBETÇİ TANITIM TURU — gerçek ekran görüntüleri üzerinde video benzeri, adım adım tur.
+// MONELIS TANITIM TURU — gerçek ekran görüntüleri üzerinde video benzeri, adım adım tur.
 // İçerik icerik.js'teki ICERIK.tur'dan, hedeflerin görüntüdeki yerleri assets/ekranlar/konumlar.js'ten (EKRAN_KONUMLARI) gelir.
 // Zaman çizelgesi saftır: render(t) her an için aynı görüntüyü üretir; bu yüzden ileri / geri sarma ve bölüme atlama kolaydır.
 (function () {
@@ -25,7 +25,7 @@
     const sohbet = el('div', 'sohbet');
     const ust = el('div', 'sohbet-ust');
     ust.innerHTML = `<span class="avatar">${KALKAN}</span>`;
-    const ad = el('div'); ad.append(el('b', '', t.botAdi || 'Nöbetçi'), el('small', '', t.botDurum || 'bot'));
+    const ad = el('div'); ad.append(el('b', '', t.botAdi || 'Monelis'), el('small', '', t.botDurum || 'bot'));
     ust.append(ad);
     const akis = el('div', 'sohbet-akis');
     const komut = el('div', 'balon ben', t.komut);
@@ -380,5 +380,5 @@
     oynatici.oynat();
   }
 
-  window.NobetciTur = { Tur, telefonKur, oynaticiAc };
+  window.MonelisTur = { Tur, telefonKur, oynaticiAc };
 })();

@@ -1,6 +1,6 @@
-// NÖBETÇİ TANITIM SİTESİ — alt sayfalar: Nasıl çalışır, Özellikler, Güvenlik, Yenilikler.
-// Metinler icerik.js'ten gelir; ortak yardımcılar site.js'teki NobetciOrtak'tır (site.js bu dosyadan sonra yüklenir ve
-// window.NobetciSayfa'yı kendi kurulumundan sonra çağırır).
+// MONELIS TANITIM SİTESİ — alt sayfalar: Nasıl çalışır, Özellikler, Güvenlik, Yenilikler.
+// Metinler icerik.js'ten gelir; ortak yardımcılar site.js'teki MonelisOrtak'tır (site.js bu dosyadan sonra yüklenir ve
+// window.MonelisSayfa'yı kendi kurulumundan sonra çağırır).
 (function () {
   'use strict';
 
@@ -126,7 +126,7 @@
       if (a.telefon) {
         const tel = el('div', 'sohbet-telefon adim-telefon');
         gorsel.append(tel);
-        const durum = window.NobetciTur.telefonKur(tel);
+        const durum = window.MonelisTur.telefonKur(tel);
         const telefon = (p) => durum(p < 0.08 ? 0 : p < 0.2 ? 1 : p < 0.36 ? 2 : p < 0.48 ? 3 : p < 0.7 ? 4 : 5);
         f = telefon;
         // Telefon + gerçek ekran: önce telefon, sonra (ilerlemenin son kısmında) ekran kesiti; aynı yerde sırayla.
@@ -180,7 +180,7 @@
       const d = o.el('div', 'mikro mikro-telefon');
       const tel = o.el('div', 'sohbet-telefon');
       d.append(tel);
-      const durum = window.NobetciTur.telefonKur(tel);
+      const durum = window.MonelisTur.telefonKur(tel);
       let n = 0; let zaman = 0;
       durum(o.AZ_HAREKET ? 5 : 0);
       d._ac = () => { if (o.AZ_HAREKET) return; clearInterval(zaman); zaman = setInterval(() => { n = (n + 1) % 7; durum(Math.min(n, 5)); }, 1100); };
@@ -543,7 +543,7 @@
         const y = await fetch(s.servis, {
           method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, credentials: 'omit', referrerPolicy: 'no-referrer',
           body: JSON.stringify({
-            access_key: s.anahtar, subject: `Nöbetçi sitesi · ${konu.g.value}`, from_name: 'Nöbetçi sitesi',
+            access_key: s.anahtar, subject: `Monelis sitesi · ${konu.g.value}`, from_name: 'Monelis sitesi',
             name: ad.g.value.trim(), email: eposta.g.value.trim(), telefon: telefon.g.value.trim(), konu: konu.g.value, message: mesaj.g.value.trim(), botcheck: false
           })
         });
@@ -604,7 +604,7 @@
     addEventListener('hashchange', adrestenAc);
   }
 
-  window.NobetciSayfa = function (o) {
+  window.MonelisSayfa = function (o) {
     const sayfa = document.body.dataset.sayfa;
     if (sayfa === 'nasil') nasilSayfasi(o);
     else if (sayfa === 'ozellikler') ozellikSayfasi(o);
