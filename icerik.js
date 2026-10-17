@@ -11,7 +11,7 @@
 //  - tur: "İzle" tanıtım turu. Her adım bir ekran görüntüsünü ve o görüntüdeki bir hedefi gösterir. yazi ≤ 8 sözcük.
 window.ICERIK = {
   // Yedek sürüm bilgisi: GitHub'dan son sürüm okunamazsa gösterilir (son yayımlanan sürüm).
-  surum: 'v3.1',
+  surum: 'v3.1.1',
   tarih: '17 Ekim 2026',
 
   marka: { ad: 'Monelis' },
@@ -127,6 +127,16 @@ window.ICERIK = {
     alt: 'Her sürümde neler değişti.',
     // EN YENİ EN ÜSTTE. yakinda: true → henüz yayımlanmadı ("Yakında" rozeti; yeni sürüm çıkınca maddeleri o sürüme taşıyın).
     liste: [
+      {
+        surum: 'v3.1.1', tarih: '17 Ekim 2026',
+        maddeler: [
+          'Yeni karşılama ekranı, kurulum sihirbazı ve yedekten yükleme: adımlar tek kartta, daha sade',
+          'Ayarlar giriş sayfası: yedi kart, durum rozetleri ve önerilen sonraki adım; bölüm ekranları kart içinde kart olmadan',
+          'İzinler ve Bildirimler: her satırda yalnız başlık ve anahtar; açıklama üzerine gelince görünür',
+          'Bugün düğmesi pano satırında: 10’dan az konu yeşil, 10–20 sarı, 20’den fazla kırmızı',
+          'Test verisi ve Planlı koşular ekranları yenilendi; veri sağlığında tıkladığınız sorun türü ayrı listelenir'
+        ]
+      },
       {
         surum: 'v3.1', tarih: '17 Ekim 2026',
         maddeler: [
