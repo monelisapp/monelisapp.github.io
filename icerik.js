@@ -11,8 +11,8 @@
 //  - tur: "İzle" tanıtım turu. Her adım bir ekran görüntüsünü ve o görüntüdeki bir hedefi gösterir. yazi ≤ 8 sözcük.
 window.ICERIK = {
   // Yedek sürüm bilgisi: GitHub'dan son sürüm okunamazsa gösterilir (son yayımlanan sürüm).
-  surum: 'v3.0',
-  tarih: '15 Ekim 2026',
+  surum: 'v3.2',
+  tarih: '19 Ekim 2026',
 
   marka: { ad: 'Monelis' },
 
@@ -127,6 +127,15 @@ window.ICERIK = {
     alt: 'Her sürümde neler değişti.',
     // EN YENİ EN ÜSTTE. yakinda: true → henüz yayımlanmadı ("Yakında" rozeti; yeni sürüm çıkınca maddeleri o sürüme taşıyın).
     liste: [
+      {
+        surum: 'v3.2', tarih: '19 Ekim 2026',
+        maddeler: [
+          'Jira panosu: Jira kartlarını Monelis’te görün, durumu değiştirin, kartı senaryolara bağlayın, test sonucu notu ve hata kaydı gönderin',
+          'Yeni karşılama, kurulum sihirbazı ve Ayarlar: “Ne yapmak istiyorsunuz?” aramasıyla doğru ayara gidin; kasa açarken kullanıcı adı yalnız ekip listesi olan dosyada sorulur',
+          'Bugün düğmesi pano satırında: ilgilenmeniz gereken konuların sayısı renkli bir düğmede; yeni ya da artan hatalar ve “Ne değişti?” satırı pencerede',
+          'Kapsam özetleri: ekran, akış ve servis başına neyin test edildiği ve öneriler; gereksinimden ekran / servis eşlemesi; test verisi tablolarında değer ve karşılık taşıma'
+        ]
+      },
       {
         surum: 'v3.0', tarih: '15 Ekim 2026',
         maddeler: [
