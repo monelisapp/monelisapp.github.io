@@ -11,8 +11,8 @@
 //  - tur: "İzle" tanıtım turu. Her adım bir ekran görüntüsünü ve o görüntüdeki bir hedefi gösterir. yazi ≤ 8 sözcük.
 window.ICERIK = {
   // Yedek sürüm bilgisi: GitHub'dan son sürüm okunamazsa gösterilir (son yayımlanan sürüm).
-  surum: 'v3.2',
-  tarih: '19 Ekim 2026',
+  surum: 'v3.3',
+  tarih: '27 Ekim 2026',
 
   marka: { ad: 'Monelis' },
 
@@ -127,6 +127,16 @@ window.ICERIK = {
     alt: 'Her sürümde neler değişti.',
     // EN YENİ EN ÜSTTE. yakinda: true → henüz yayımlanmadı ("Yakında" rozeti; yeni sürüm çıkınca maddeleri o sürüme taşıyın).
     liste: [
+      {
+        surum: 'v3.3', tarih: '27 Ekim 2026',
+        maddeler: [
+          'Akıllı Sızıntı: yeni test türü; ekranın istemci kuralları (gizli alan, uzunluk, seçenek listesi, adım atlama, hesaplanmış tutar) sunucuda da korunuyor mu, kanıtıyla raporlar. Kayıtlı olmayan bir adreste tek seferlik, kendi girişinizle de çalışır',
+          'Birden çok Özet panosu: sekmelerle ayrı panolar, kartları panolar arasında taşıma, Telegram’da pano seçimi ve hızlı arama',
+          'Servis izleme: metot hata oranı kartı ve uyarı kuralı; durdurduğunuz çağrılar hata sayılmaz. Bugün penceresinde dünden bugüne ve bu hafta değişimleri',
+          'Daha sade ekranlar: Senaryolar, Sonuçlar, Özet panosu ve Ortam ekranlarında daha az düğme, daha kısa satırlar; dar ekranda daha rahat kullanım',
+          'Koşu durdurma tutarlı: durdurulan koşu her yerde “Durduruldu” görünür ve son / önceki tam koşu sayılmaz'
+        ]
+      },
       {
         surum: 'v3.2', tarih: '19 Ekim 2026',
         maddeler: [
